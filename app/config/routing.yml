@@ -1,0 +1,5 @@
+secret_party_core:
+    resource: "@SecretPartyCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
