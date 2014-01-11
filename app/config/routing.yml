@@ -3,3 +3,7 @@ secret_party_core:
     type:     annotation
     prefix:   /
 
+secret_party_core_thematic_api:
+    type:     rest
+    resource: SecretParty\Bundle\CoreBundle\Controller\Api\ThematicApiController
+    prefix: /api/
