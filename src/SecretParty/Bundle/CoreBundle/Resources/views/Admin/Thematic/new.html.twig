@@ -1,0 +1,14 @@
+
+{% block body -%}
+    <h1>Thematic creation</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('admin_thematic') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}
