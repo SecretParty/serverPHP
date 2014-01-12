@@ -3,12 +3,13 @@
 namespace SecretParty\Bundle\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Secrets
  *
  * @ORM\Table(name="secretpartycore_secrets")
- * @ORM\Entity(repositoryClass="SecretParty\Bundle\CoreBundle\Entity\SecretsRepository")
+ * @ORM\Entity(repositoryClass="SecretParty\Bundle\CoreBundle\Entity\Repository\SecretsRepository")
  */
 class Secrets
 {
@@ -22,9 +23,18 @@ class Secrets
     private $id;
 
     /**
+     * @var Thematic
+     *
+     * @ORM\ManyToOne(targetEntity="Thematic", inversedBy="secrets")
+     * @ORM\JoinColumn(name="thematic_id", referencedColumnName="id")
+     */
+    private $thematic;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="text")
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -32,16 +42,9 @@ class Secrets
      * @var string
      *
      * @ORM\Column(name="indication", type="text")
+     * @Assert\NotBlank()
      */
     private $indication;
-
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Thematic")
-     * @ORM\JoinColumn(name="thematic_id", referencedColumnName="id")
-     */
-    private $thematic;
 
     /**
      * Get id

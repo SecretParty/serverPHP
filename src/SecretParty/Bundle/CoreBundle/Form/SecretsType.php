@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ThematicType extends AbstractType
+class SecretsType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,16 +15,8 @@ class ThematicType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('secrets', 'collection', array(
-                'type' => new SecretsType(),
-                'allow_add' => true,
-                'by_reference' => false,
-                'allow_delete' => true,
-                'attr'=>array(
-                    'class'=>'secret'
-                ))
-            )
+            ->add('name','text',array())
+            ->add('indication','text',array())
         ;
     }
     
@@ -34,8 +26,7 @@ class ThematicType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'SecretParty\Bundle\CoreBundle\Entity\Thematic',
-            'cascade_validation' => true
+            'data_class' => 'SecretParty\Bundle\CoreBundle\Entity\Secrets'
         ));
     }
 
@@ -44,6 +35,6 @@ class ThematicType extends AbstractType
      */
     public function getName()
     {
-        return 'secretparty_bundle_corebundle_thematic';
+        return 'secretparty_bundle_corebundle_secrets';
     }
 }

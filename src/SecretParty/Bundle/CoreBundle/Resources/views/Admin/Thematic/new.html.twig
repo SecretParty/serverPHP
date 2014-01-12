@@ -2,7 +2,18 @@
 {% block body -%}
     <h1>Thematic creation</h1>
 
-    {{ form(form) }}
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        <h3>Secrets</h3>
+        <ul class="secrets" data-prototype="{{ form_widget(form.secrets.vars.prototype)|e }}">
+            {# iterate over each existing secret #}
+            {% for secret in form.secrets %}
+                <li class="secret"><div>{{ form_row(secret.name) }}</div>
+                <div>{{ form_row(secret.indication) }}</div></li>
+            {% endfor %}
+        </ul>
+    {%  do form.secrets.setRendered %}
+    {{ form_end(form) }}
 
         <ul class="record_actions">
     <li>
@@ -11,4 +22,6 @@
         </a>
     </li>
 </ul>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="{{ asset('bundles/secretpartycore/js/collection.js') }}" type="text/javascript"></script>
 {% endblock %}

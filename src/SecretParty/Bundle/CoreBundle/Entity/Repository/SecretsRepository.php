@@ -1,6 +1,6 @@
 <?php
 
-namespace SecretParty\Bundle\CoreBundle\Entity;
+namespace SecretParty\Bundle\CoreBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

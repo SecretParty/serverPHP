@@ -2,6 +2,7 @@
 
 namespace SecretParty\Bundle\CoreBundle\Controller\Admin;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -50,6 +51,10 @@ class ThematicController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            foreach($entity->getSecrets() as $secret){
+                $secret->setThematic($entity);
+                $em->persist($secret);
+            }
             $em->persist($entity);
             $em->flush();
 
@@ -186,14 +191,33 @@ class ThematicController extends Controller
             throw $this->createNotFoundException('Unable to find Thematic entity.');
         }
 
+        $originalSecrets = new ArrayCollection();
+        foreach ($entity->getSecrets() as $secret) {
+            $originalSecrets->add($secret);
+        }
+
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            // add for new secret
+            foreach($entity->getSecrets() as $secret){
+                $secret->setThematic($entity);
+                $em->persist($secret);
+            }
+
+            // remove the relationship between the secret and the thematic
+            foreach ($originalSecrets as $secret) {
+                if (false === $entity->getSecrets()->contains($secret)) {
+                    $secret->setThematic(null);
+                    $em->remove($secret);
+                }
+            }
+
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_thematic_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('admin_thematic_show', array('id' => $id)));
         }
 
         return array(

@@ -5,16 +5,16 @@
     <table class="records_list">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
+                <th>Secrets</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('admin_thematic_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
+                <td><a href="{{ path('admin_thematic_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                <td>{{ entity.secrets|length }}</td>
                 <td>
                 <ul>
                     <li>

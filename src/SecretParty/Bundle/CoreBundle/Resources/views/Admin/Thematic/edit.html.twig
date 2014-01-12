@@ -2,7 +2,18 @@
 {% block body -%}
     <h1>Thematic edit</h1>
 
-    {{ form(edit_form) }}
+    {{ form_start(edit_form) }}
+    {{ form_row(edit_form.name) }}
+    <h3>Secrets</h3>
+    <ul class="secrets" data-prototype="{{ form_widget(edit_form.secrets.vars.prototype)|e }}">
+        {# iterate over each existing secret #}
+        {% for secret in edit_form.secrets %}
+            <li class="secret"><div>{{ form_row(secret.name) }}</div>
+                <div>{{ form_row(secret.indication) }}</div></li>
+        {% endfor %}
+    </ul>
+    {%  do edit_form.secrets.setRendered %}
+    {{ form_end(edit_form) }}
 
         <ul class="record_actions">
     <li>
@@ -12,4 +23,6 @@
     </li>
     <li>{{ form(delete_form) }}</li>
 </ul>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="{{ asset('bundles/secretpartycore/js/collection.js') }}" type="text/javascript"></script>
 {% endblock %}
