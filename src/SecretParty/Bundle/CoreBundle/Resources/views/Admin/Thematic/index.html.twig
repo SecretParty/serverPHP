@@ -1,40 +1,37 @@
+{% extends 'SecretPartyCoreBundle:Admin:template.html.twig' %}
 
-{% block body -%}
-    <h1>Thematic list</h1>
-
-    <table class="records_list">
-        <thead>
+{% block title %}Thematic list{% endblock %}
+{% block section %}Thematic{% endblock %}
+{% block content -%}
+<div class="tab_container">
+    <div class="tab_content">
+        <table class="tablesorter" cellspacing="0">
+            <thead>
             <tr>
                 <th>Name</th>
                 <th>Secrets</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('admin_thematic_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
-                <td>{{ entity.secrets|length }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('admin_thematic_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('admin_thematic_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('admin_thematic_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                    <td>{{ entity.secrets|length }}</td>
+                    <td><a href="{{ path('admin_thematic_edit', { 'id': entity.id }) }}" ><img src="{{ asset('bundles/secretpartycore/images/icn_edit.png') }}" title="edit"></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        <ul>
-        <li>
-            <a href="{{ path('admin_thematic_new') }}">
-                Create a new entry
-            </a>
-        </li>
+{% endblock %}
+{% block end_header %}
+    <ul class="tabs">
+        <li><a href="{{ path('admin_thematic_new') }}">
+                New Thematic
+        </a></li>
     </ul>
-    {% endblock %}
+{% endblock %}

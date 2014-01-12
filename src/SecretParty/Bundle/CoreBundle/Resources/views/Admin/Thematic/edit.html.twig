@@ -1,6 +1,9 @@
+{% extends 'SecretPartyCoreBundle:Admin:template.html.twig' %}
 
-{% block body -%}
-    <h1>Thematic edit</h1>
+{% block title %}Thematic edit {{ entity.name }}{% endblock %}
+{% block section %}Thematic{% endblock %}
+{% block content -%}
+<div class="module_content">
 
     {{ form_start(edit_form) }}
     {{ form_row(edit_form.name) }}
@@ -14,15 +17,18 @@
     </ul>
     {%  do edit_form.secrets.setRendered %}
     {{ form_end(edit_form) }}
+</div>
+{% endblock %}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_thematic') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+{% block end_header %}
+    <ul class="tabs">
+        <li><a href="{{ path('admin_thematic') }}">
+                Back
+            </a></li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+{% endblock %}
+
+{% block end_js %}
     <script src="{{ asset('bundles/secretpartycore/js/collection.js') }}" type="text/javascript"></script>
 {% endblock %}

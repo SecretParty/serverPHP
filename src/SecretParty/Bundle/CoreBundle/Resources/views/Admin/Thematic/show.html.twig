@@ -1,37 +1,44 @@
+{% extends 'SecretPartyCoreBundle:Admin:template.html.twig' %}
 
-{% block body -%}
-    <h1>Thematic</h1>
+{% block title %}Thematic {{ entity.name }}{% endblock %}
+{% block section %}Thematic{% endblock %}
+{% block content -%}
+<div class="tab_container">
+    <div class="tab_content">
+        <table class="tablesorter" cellspacing="0">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ entity.name }}</td>
+                </tr>
+                <tr>
+                    <th>Secrets</th>
+                    <td>
+                        <ul>
+                            {% for secret in entity.secrets %}
+                            <li>{{ secret.name }} - {{ secret.indication }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ entity.name }}</td>
-            </tr>
-            <tr>
-                <th>Secrets</th>
-                <td>
-                    <ul>
-                        {% for secret in entity.secrets %}
-                        <li>{{ secret.name }} - {{ secret.indication }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_thematic') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('admin_thematic_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+{% endblock %}
+{% block end_header %}
+    <ul class="tabs">
+        <li>
+            <a href="{{ path('admin_thematic') }}">
+                Back
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('admin_thematic_edit', { 'id': entity.id }) }}">
+                Edit
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
 {% endblock %}
