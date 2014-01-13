@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>Secret party server - {{ block('title') }}</title>
+    <title>{% trans %}Secret party server{% endtrans %} - {{ block('title') }}</title>
 
     <link rel="stylesheet" href="{{ asset('bundles/secretpartycore/css/layout.css') }}" type="text/css" media="screen" />
     <!--[if lt IE 9]>
@@ -18,15 +18,15 @@
 
 <header id="header">
     <hgroup>
-        <h1 class="site_title"><a href="index.html">Secret Party Admin</a></h1>
-        <h2 class="section_title">{{ block('section') }}</h2><div class="btn_view_site"><a href="{{ path('nelmio_api_doc_index') }}">View api doc</a></div>
+        <h1 class="site_title"><a href="index.html">{% trans %}Secret Party Admin{% endtrans %}</a></h1>
+        <h2 class="section_title">{{ block('section') }}</h2><div class="btn_view_site"><a href="{{ path('nelmio_api_doc_index') }}">{% trans %}View api doc{% endtrans %}</a></div>
     </hgroup>
 </header> <!-- end of header bar -->
 
 <section id="secondary_bar">
     <div class="user">
         <p>John Doe</p>
-        <a class="logout_user" href="#" title="Logout">Logout</a>
+        <a class="logout_user" href="#" title="{% trans %}Logout{% endtrans %}">{% trans %}Logout{% endtrans %}</a>
     </div>
 </section><!-- end of secondary bar -->
 

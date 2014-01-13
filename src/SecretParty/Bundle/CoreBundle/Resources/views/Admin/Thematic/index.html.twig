@@ -1,16 +1,16 @@
 {% extends 'SecretPartyCoreBundle:Admin:template.html.twig' %}
 
-{% block title %}Thematic list{% endblock %}
-{% block section %}Thematic{% endblock %}
+{% block title %}{% trans %}Thematic list{% endtrans %}{% endblock %}
+{% block section %}{% trans %}Thematic{% endtrans %}{% endblock %}
 {% block content -%}
 <div class="tab_container">
     <div class="tab_content">
         <table class="tablesorter" cellspacing="0">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Secrets</th>
-                <th>Actions</th>
+                <th>{% trans %}Name{% endtrans %}</th>
+                <th>{% trans %}Secrets{% endtrans %}</th>
+                <th>{% trans %}Actions{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -18,7 +18,7 @@
                 <tr>
                     <td><a href="{{ path('admin_thematic_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
                     <td>{{ entity.secrets|length }}</td>
-                    <td><a href="{{ path('admin_thematic_edit', { 'id': entity.id }) }}" ><img src="{{ asset('bundles/secretpartycore/images/icn_edit.png') }}" title="edit"></a>
+                    <td><a href="{{ path('admin_thematic_edit', { 'id': entity.id }) }}" ><img src="{{ asset('bundles/secretpartycore/images/icn_edit.png') }}" title="{% trans %}edit{% endtrans %}"></a>
                     </td>
                 </tr>
             {% endfor %}
@@ -31,7 +31,7 @@
 {% block end_header %}
     <ul class="tabs">
         <li><a href="{{ path('admin_thematic_new') }}">
-                New Thematic
+                {% trans %}New Thematic{% endtrans %}
         </a></li>
     </ul>
 {% endblock %}

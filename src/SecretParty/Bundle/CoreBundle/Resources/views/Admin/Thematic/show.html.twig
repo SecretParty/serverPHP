@@ -1,18 +1,18 @@
 {% extends 'SecretPartyCoreBundle:Admin:template.html.twig' %}
 
-{% block title %}Thematic {{ entity.name }}{% endblock %}
-{% block section %}Thematic{% endblock %}
+{% block title %}{% trans %}Thematic{% endtrans %} {{ entity.name }}{% endblock %}
+{% block section %}{% trans %}Thematic{% endtrans %}{% endblock %}
 {% block content -%}
 <div class="tab_container">
     <div class="tab_content">
         <table class="tablesorter" cellspacing="0">
             <tbody>
                 <tr>
-                    <th>Name</th>
+                    <th>{% trans %}Name{% endtrans %}</th>
                     <td>{{ entity.name }}</td>
                 </tr>
                 <tr>
-                    <th>Secrets</th>
+                    <th>{% trans %}Secrets{% endtrans %}</th>
                     <td>
                         <ul>
                             {% for secret in entity.secrets %}
@@ -31,12 +31,12 @@
     <ul class="tabs">
         <li>
             <a href="{{ path('admin_thematic') }}">
-                Back
+                {% trans %}Back{% endtrans %}
             </a>
         </li>
         <li>
             <a href="{{ path('admin_thematic_edit', { 'id': entity.id }) }}">
-                Edit
+                {% trans %}Edit{% endtrans %}
             </a>
         </li>
         <li>{{ form(delete_form) }}</li>

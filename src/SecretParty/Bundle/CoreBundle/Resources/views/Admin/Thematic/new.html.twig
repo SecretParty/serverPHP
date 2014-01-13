@@ -1,12 +1,12 @@
 {% extends 'SecretPartyCoreBundle:Admin:template.html.twig' %}
 
-{% block title %}Thematic creation{% endblock %}
-{% block section %}Thematic{% endblock %}
+{% block title %}{% trans %}Thematic creation{% endtrans %}{% endblock %}
+{% block section %}{% trans %}Thematic{% endtrans %}{% endblock %}
 {% block content -%}
 <div class="module_content">
     {{ form_start(form) }}
         {{ form_row(form.name) }}
-        <h3>Secrets</h3>
+        <h3>{% trans %}Secrets{% endtrans %}</h3>
         <ul class="secrets" data-prototype="{{ form_widget(form.secrets.vars.prototype)|e }}">
             {# iterate over each existing secret #}
             {% for secret in form.secrets %}
@@ -22,7 +22,7 @@
 {% block end_header %}
     <ul class="tabs">
         <li><a href="{{ path('admin_thematic') }}">
-                Back
+                {% trans %}Back{% endtrans %}
             </a></li>
     </ul>
 {% endblock %}
