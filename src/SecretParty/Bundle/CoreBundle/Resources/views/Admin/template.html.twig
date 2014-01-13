@@ -1,11 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ app.request.locale }}">
 
 <head>
     <meta charset="utf-8"/>
     <title>{% trans %}Secret party server{% endtrans %} - {{ block('title') }}</title>
 
-    <link rel="stylesheet" href="{{ asset('bundles/secretpartycore/css/layout.css') }}" type="text/css" media="screen" />
+    {% stylesheets 'bundles/secretpartycore/css/layout.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
     <!--[if lt IE 9]>
     <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -25,8 +27,8 @@
 
 <section id="secondary_bar">
     <div class="user">
-        <p>John Doe</p>
-        <a class="logout_user" href="#" title="{% trans %}Logout{% endtrans %}">{% trans %}Logout{% endtrans %}</a>
+        <p>{{ app.user.username }}</p>
+        <a class="logout_user" href="{{ path('fos_user_security_logout') }}" title="{% trans %}Logout{% endtrans %}">{% trans %}Logout{% endtrans %}</a>
     </div>
 </section><!-- end of secondary bar -->
 
@@ -53,28 +55,14 @@
 
 <div class="spacer"></div>
 </section>
-
-<script src="{{ asset('bundles/secretpartycore/js/jquery-1.10.2.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('bundles/secretpartycore/js/hideshow.js') }}" type="text/javascript"></script>
-<script src="{{ asset('bundles/secretpartycore/js/jquery.tablesorter.min.js') }}" type="text/javascript"></script>
-<script type="text/javascript" src="{{ asset('bundles/secretpartycore/js/jquery.equalHeight.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function()
-            {
-                $(".tablesorter").tablesorter();
-            }
-    );
-    $(document).ready(function() {
-
-
-    });
-</script>
-<script type="text/javascript">
-    $(function(){
-        $('.column').equalHeight();
-    });
-</script>
-{{ block('end_js') }}
+{% javascripts  '@SecretPartyCoreBundle/Resources/public/js/jquery-1.10.2.min.js'
+                '@SecretPartyCoreBundle/Resources/public/js/hideshow.js'
+                '@SecretPartyCoreBundle/Resources/public/js/jquery.tablesorter.min.js'
+                '@SecretPartyCoreBundle/Resources/public/js/jquery.equalHeight.js'
+                '@SecretPartyCoreBundle/Resources/public/js/collection.js'
+                '@SecretPartyCoreBundle/Resources/public/js/main.js'%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
 </body>
 
 </html>
