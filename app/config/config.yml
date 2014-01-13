@@ -3,8 +3,8 @@ imports:
     - { resource: security.yml }
 
 framework:
-    #esi:             ~
-    #translator:      { fallback: "%locale%" }
+    esi:             ~
+    translator:      { fallback: "%locale%" }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -70,3 +70,9 @@ swiftmailer:
 
 # NelmioApiDoc Configuration
 nelmio_api_doc: ~
+
+# FOSUserBundle Configuration
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: SecretParty\Bundle\UserBundle\Entity\User

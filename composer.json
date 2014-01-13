@@ -23,7 +23,8 @@
         "jms/serializer-bundle": "@dev",
         "nelmio/api-doc-bundle": "@dev",
         "knplabs/knp-menu" : "dev-master",
-        "knplabs/knp-menu-bundle":"dev-master"
+        "knplabs/knp-menu-bundle":"dev-master",
+        "friendsofsymfony/user-bundle": "~2.0@dev"
     },
     "scripts": {
         "post-install-cmd": [
