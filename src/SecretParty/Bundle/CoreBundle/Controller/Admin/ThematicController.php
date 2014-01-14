@@ -245,6 +245,10 @@ class ThematicController extends Controller
                 throw $this->createNotFoundException('Unable to find Thematic entity.');
             }
 
+            foreach($entity->getSecrets() as $secret){
+                $em->remove($secret);
+            }
+
             $em->remove($entity);
             $em->flush();
         }
