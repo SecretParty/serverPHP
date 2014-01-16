@@ -1,0 +1,44 @@
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ asset('bundles/secretpartyuser/css/style.css') }}">
+    <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+
+<form action="{{ path("fos_user_security_check") }}" method="post" class="login">
+    {% if error %}<p class="alert-danger">{{ error|trans }}</p>{% endif %}
+    <div class="intermediaire">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <p>
+            <label for="username">{{ 'security.login.username'|trans }}</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+        </p>
+        <p>
+            <label for="password">{{ 'security.login.password'|trans }}</label>
+            <input type="password" id="password" name="_password" required="required" />
+        </p>
+        <p class="login-submit">
+            <button id="_submit" name="_submit" class="login-button" />{{ 'security.login.submit'|trans }}</button>
+        </p>
+    </div>
+</form>
+
+
+<section class="about">
+    <p class="about-author">
+        &copy; 2012&ndash;2013 <a href="http://thibaut.me" target="_blank">Thibaut Courouble</a> -
+        <a href="http://www.cssflow.com/mit-license" target="_blank">MIT License</a><br>
+        Original PSD by <a href="http://365psd.com/day/2-234/" target="_blank">Rich McNabb</a>
+</section>
+</body>
+</html>
