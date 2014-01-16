@@ -1,8 +1,8 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "SecretParty/ServerPHP",
+    "license": "GNU GPL v3",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "description": "Serveur de gestion des parties",
     "autoload": {
         "psr-0": { "": "src/" }
     },

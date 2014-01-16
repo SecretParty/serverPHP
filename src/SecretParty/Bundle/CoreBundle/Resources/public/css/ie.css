@@ -10,7 +10,7 @@ width: 88%;
 color: #ccc;
 padding-left: 2%;
 padding-top: 5px;
-background: #fff url(../../../../../../../../../../../Downloads/HTML5%20Admin%20Template/images/icn_search.png) no-repeat;
+background: #fff url(../images/icn_search.png) no-repeat;
 background-position: 10px 6px;
 }
 
@@ -25,7 +25,7 @@ background: #ccc;
 }
 
 input[type=submit].btn_post_message {
-background: url(../../../../../../../../../../../Downloads/HTML5%20Admin%20Template/images/post_message.png) no-repeat;
+background: url(../images/post_message.png) no-repeat;
 }
 
 fieldset input[type=text] {
