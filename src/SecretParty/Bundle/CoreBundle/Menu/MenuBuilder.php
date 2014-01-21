@@ -39,9 +39,11 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('Thematic', array());
-        $menu['Thematic']->addChild('New Thematic', array('route' => 'admin_thematic_new','attributes'=>array('class'=>'icn_new_article')));
-        $menu['Thematic']->addChild('List Thematic', array('route' => 'admin_thematic','attributes'=>array('class'=>'icn_categories')));
+        $menu->addChild('Thematics and secrets', array());
+        $menu['Thematics and secrets']->addChild('New Thematic', array('route' => 'admin_thematic_new','attributes'=>array('class'=>'icn_new_article')));
+        $menu['Thematics and secrets']->addChild('List Thematic', array('route' => 'admin_thematic','attributes'=>array('class'=>'icn_categories')));
+         $menu->addChild('Parties', array());
+        $menu['Parties']->addChild('List Parties', array('route' => 'admin_party','attributes'=>array('class'=>'icn_categories')));
         return $menu;
     }
 }

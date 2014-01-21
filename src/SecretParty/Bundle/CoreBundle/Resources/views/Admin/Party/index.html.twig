@@ -1,0 +1,31 @@
+{% extends 'SecretPartyCoreBundle:Admin:template.html.twig' %}
+
+{% block title %}{% trans %}Parties{% endtrans %}{% endblock %}
+{% block section %}{% trans %}Parties{% endtrans %}{% endblock %}
+{% block content -%}
+<div class="tab_container">
+    <div class="tab_content">
+        <table class="tablesorter" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Lenght</th>
+                <th>Date</th>
+                <th>Players</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('admin_party_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                    <td>{{ entity.lenght }}</td>
+                    <td>{% if entity.date %}{{ entity.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{{ entity.users|length }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

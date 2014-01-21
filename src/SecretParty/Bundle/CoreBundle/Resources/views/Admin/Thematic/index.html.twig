@@ -10,6 +10,7 @@
             <tr>
                 <th>{% trans %}Name{% endtrans %}</th>
                 <th>{% trans %}Secrets{% endtrans %}</th>
+                <th>{% trans %}Parties{% endtrans %}</th>
                 <th>{% trans %}Actions{% endtrans %}</th>
             </tr>
             </thead>
@@ -18,6 +19,7 @@
                 <tr>
                     <td><a href="{{ path('admin_thematic_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
                     <td>{{ entity.secrets|length }}</td>
+                    <td>{{ entity.parties|length }}</td>
                     <td><a href="{{ path('admin_thematic_edit', { 'id': entity.id }) }}" ><img src="{{ asset('bundles/secretpartycore/images/icn_edit.png') }}" title="{% trans %}edit{% endtrans %}"></a>
                     </td>
                 </tr>
