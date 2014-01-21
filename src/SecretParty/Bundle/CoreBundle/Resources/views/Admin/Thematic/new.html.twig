@@ -11,7 +11,7 @@
             {# iterate over each existing secret #}
             {% for secret in form.secrets %}
                 <li class="secret"><div>{{ form_row(secret.name) }}</div>
-                <div>{{ form_row(secret.indication) }}</div></li>
+                <div>{{ form_row(secret.hint) }}</div></li>
             {% endfor %}
         </ul>
     {%  do form.secrets.setRendered %}

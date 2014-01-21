@@ -59,10 +59,10 @@ class Secrets
     /**
      * @var string
      *
-     * @ORM\Column(name="indication", type="text")
+     * @ORM\Column(name="hint", type="text")
      * @Assert\NotBlank()
      */
-    private $indication;
+    private $hint;
 
     /**
      * Get id
@@ -98,26 +98,26 @@ class Secrets
     }
 
     /**
-     * Set indication
+     * Set hint
      *
-     * @param string $indication
+     * @param string $hint
      * @return Secrets
      */
-    public function setIndication($indication)
+    public function setHint($hint)
     {
-        $this->indication = $indication;
+        $this->hint = $hint;
 
         return $this;
     }
 
     /**
-     * Get indication
+     * Get hint
      *
      * @return string 
      */
-    public function getIndication()
+    public function getHint()
     {
-        return $this->indication;
+        return $this->hint;
     }
 
     /**

@@ -55,8 +55,14 @@ class Thematic
      *
      * @ORM\OneToMany(targetEntity="Secrets", mappedBy="thematic", cascade={"persist"})
      */
-
     private $secrets;
+
+    /**
+     * @var Secrets
+     *
+     * @ORM\OneToMany(targetEntity="Party", mappedBy="thematic", cascade={"persist"})
+     */
+    private $parties;
 
     function __construct()
     {
@@ -128,5 +134,38 @@ class Thematic
     public function getSecrets()
     {
         return $this->secrets;
+    }
+
+    /**
+     * Add parties
+     *
+     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $parties
+     * @return Thematic
+     */
+    public function addParty(\SecretParty\Bundle\CoreBundle\Entity\Party $parties)
+    {
+        $this->parties[] = $parties;
+
+        return $this;
+    }
+
+    /**
+     * Remove parties
+     *
+     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $parties
+     */
+    public function removeParty(\SecretParty\Bundle\CoreBundle\Entity\Party $parties)
+    {
+        $this->parties->removeElement($parties);
+    }
+
+    /**
+     * Get parties
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getParties()
+    {
+        return $this->parties;
     }
 }

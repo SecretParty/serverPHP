@@ -34,7 +34,7 @@ class SecretsType extends AbstractType
     {
         $builder
             ->add('name','text',array())
-            ->add('indication','text',array())
+            ->add('hint','text',array())
         ;
     }
     
