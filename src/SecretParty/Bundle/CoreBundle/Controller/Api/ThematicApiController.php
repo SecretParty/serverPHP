@@ -23,6 +23,8 @@ namespace SecretParty\Bundle\CoreBundle\Controller\Api;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations\Get;
+
 /**
  * Thematic controller.
  *
@@ -37,6 +39,7 @@ class ThematicApiController extends FOSRestController
      *  resource=true,
      *  description="Lists all Thematic entities."
      * )
+     * @Get("/thematics")
      */
     public function getThematicsAction()
     {

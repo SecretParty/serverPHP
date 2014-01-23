@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use SecretParty\Bundle\CoreBundle\Entity\User;
-
+use FOS\RestBundle\Controller\Annotations\Post;
 
 /**
  * User API controller.
@@ -40,6 +40,7 @@ class UserApiController extends FOSRestController
      *  resource=true,
      *  description="Create a new user - take 3 args : name of the user, id of secret and id of party"
      * )
+     * @Post("/user")
      */
     public function postUserAction(Request $request)
     {

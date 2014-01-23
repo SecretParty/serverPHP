@@ -50,9 +50,9 @@ class Party
     /**
      * @var integer
      *
-     * @ORM\Column(name="lenght", type="integer")
+     * @ORM\Column(name="length", type="integer")
      */
-    private $lenght;
+    private $length;
 
     /**
      * @var \DateTime
@@ -72,7 +72,7 @@ class Party
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="thematic", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="User", mappedBy="party", cascade={"persist"})
      */
     private $users;
 
@@ -216,5 +216,28 @@ class Party
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Set length
+     *
+     * @param integer $length
+     * @return Party
+     */
+    public function setLength($length)
+    {
+        $this->length = $length;
+
+        return $this;
+    }
+
+    /**
+     * Get length
+     *
+     * @return integer 
+     */
+    public function getLength()
+    {
+        return $this->length;
     }
 }

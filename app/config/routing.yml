@@ -4,13 +4,21 @@ secret_party_core:
     prefix:   /
 
 secret_party_core_thematic_api:
-    type:     rest
+    type:     annotation
+    defaults: {_format: json}
     resource: SecretParty\Bundle\CoreBundle\Controller\Api\ThematicApiController
     prefix: /api/
 
 secret_party_core_user_api:
-    type:     rest
+    type:     annotation
+    defaults: {_format: json}
     resource: SecretParty\Bundle\CoreBundle\Controller\Api\UserApiController
+    prefix: /api/
+
+secret_party_core_party_api:
+    type:     annotation
+    defaults: {_format: json}
+    resource: SecretParty\Bundle\CoreBundle\Controller\Api\PartyApiController
     prefix: /api/
 
 NelmioApiDocBundle:

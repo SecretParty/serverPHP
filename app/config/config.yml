@@ -76,3 +76,7 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: SecretParty\Bundle\UserBundle\Entity\User
+
+fos_rest:
+    routing_loader:
+        include_format: false
