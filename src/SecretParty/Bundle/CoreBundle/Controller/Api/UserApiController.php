@@ -46,6 +46,11 @@ class UserApiController extends FOSRestController
         $data = json_decode($request->getContent());
         $em = $this->getDoctrine()->getManager();
 
+        if(!$data->secret || !$data->party || $data->name)
+        {
+            throw new HttpException(400, 'Argument missing');
+        }
+
         $secret = $em->getRepository("SecretPartyCoreBundle:Secrets")->find($data->secret);
         if(!$secret)
         {
