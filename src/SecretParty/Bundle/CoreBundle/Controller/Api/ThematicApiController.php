@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Get;
+use JMS\Serializer\SerializationContext;
 
 /**
  * Thematic controller.
@@ -47,6 +48,8 @@ class ThematicApiController extends FOSRestController
 
         $entities = $em->getRepository('SecretPartyCoreBundle:Thematic')->findAll();
 
-        return $this->handleView($this->view($entities));
+        $view = $this->view($entities);
+        $view->setSerializationContext(SerializationContext::create()->setGroups(array('thematic')));
+        return $this->handleView($view);
     }
 }

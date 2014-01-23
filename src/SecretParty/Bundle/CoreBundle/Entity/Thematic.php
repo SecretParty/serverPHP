@@ -23,6 +23,7 @@ namespace SecretParty\Bundle\CoreBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 
 /**
@@ -39,6 +40,7 @@ class Thematic
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"party", "thematic"})
      */
     private $id;
 
@@ -47,6 +49,7 @@ class Thematic
      *
      * @ORM\Column(name="name", type="string", length=255)
      * @Assert\NotBlank()
+     * @JMS\Groups({"party", "thematic"})
      */
     private $name;
 
@@ -54,13 +57,15 @@ class Thematic
      * @var Secrets
      *
      * @ORM\OneToMany(targetEntity="Secrets", mappedBy="thematic", cascade={"persist"})
+     * @JMS\Groups({"thematic"})
      */
     private $secrets;
 
     /**
-     * @var Secrets
+     * @var Party
      *
      * @ORM\OneToMany(targetEntity="Party", mappedBy="thematic", cascade={"persist"})
+     * @JMS\Groups({"thematic"})
      */
     private $parties;
 

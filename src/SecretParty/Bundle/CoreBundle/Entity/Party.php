@@ -22,6 +22,7 @@
 namespace SecretParty\Bundle\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Party
@@ -37,6 +38,7 @@ class Party
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"party", "thematic"})
      */
     private $id;
 
@@ -44,6 +46,7 @@ class Party
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @JMS\Groups({"party", "thematic"})
      */
     private $name;
 
@@ -51,6 +54,7 @@ class Party
      * @var integer
      *
      * @ORM\Column(name="length", type="integer")
+     * @JMS\Groups({"party", "thematic"})
      */
     private $length;
 
@@ -58,6 +62,7 @@ class Party
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @JMS\Groups({"party", "thematic"})
      */
     private $date;
 
@@ -66,6 +71,7 @@ class Party
      *
      * @ORM\ManyToOne(targetEntity="Thematic")
      * @ORM\JoinColumn(name="thematic_id", referencedColumnName="id")
+     * @JMS\Groups({"party"})
      */
     private $thematic;
 
@@ -73,6 +79,7 @@ class Party
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="User", mappedBy="party", cascade={"persist"})
+     * @JMS\Groups({"party"})
      */
     private $users;
 

@@ -22,6 +22,7 @@
 namespace SecretParty\Bundle\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * User
@@ -37,6 +38,7 @@ class User
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"party"})
      */
     private $id;
 
@@ -44,6 +46,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @JMS\Groups({"party"})
      */
     private $name;
 

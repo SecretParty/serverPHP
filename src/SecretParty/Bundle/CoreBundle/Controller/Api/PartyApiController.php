@@ -24,8 +24,10 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Get;
 use SecretParty\Bundle\CoreBundle\Entity\Party;
 use SecretParty\Bundle\CoreBundle\Entity\User;
+use JMS\Serializer\SerializationContext;
 
 /**
  * Party API controller.
@@ -81,7 +83,33 @@ class PartyApiController extends FOSRestController
         $em->persist($user);
         $em->flush();
 
-        return $this->handleView($this->view($party));
+        $view = $this->view($party);
+        $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
+        return $this->handleView($view);
+    }
+
+    /**
+     * Get party informations
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Get informations about a party"
+     * )
+     * @Get("/party/{id}")
+     */
+    public function getPartyAction($id)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $party = $em->getRepository("SecretPartyCoreBundle:Party")->find($id);
+        if(!$party)
+        {
+            throw new HttpException(400, 'Party id is not valid');
+        }
+
+
+        $view = $this->view($party);
+        $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
+        return $this->handleView($view);
     }
 
 }

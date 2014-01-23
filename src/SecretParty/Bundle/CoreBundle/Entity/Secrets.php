@@ -29,7 +29,6 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @ORM\Table(name="secretpartycore_secrets")
  * @ORM\Entity(repositoryClass="SecretParty\Bundle\CoreBundle\Entity\Repository\SecretsRepository")
- * @JMS\ExclusionPolicy("NONE")
  */
 class Secrets
 {
@@ -39,6 +38,7 @@ class Secrets
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Groups({"thematic"})
      */
     private $id;
 
@@ -47,7 +47,6 @@ class Secrets
      *
      * @ORM\ManyToOne(targetEntity="Thematic", inversedBy="secrets")
      * @ORM\JoinColumn(name="thematic_id", referencedColumnName="id")
-     * @JMS\Exclude()
      */
     private $thematic;
 
@@ -56,6 +55,7 @@ class Secrets
      *
      * @ORM\Column(name="name", type="text")
      * @Assert\NotBlank()
+     * @JMS\Groups({"thematic"})
      */
     private $name;
 
@@ -64,6 +64,7 @@ class Secrets
      *
      * @ORM\Column(name="hint", type="text")
      * @Assert\NotBlank()
+     * @JMS\Groups({"thematic"})
      */
     private $hint;
 
