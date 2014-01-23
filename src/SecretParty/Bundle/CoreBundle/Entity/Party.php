@@ -247,4 +247,16 @@ class Party
     {
         return $this->length;
     }
+    
+    /**
+     * Get number of users
+     * @return integer
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"thematic"})
+     */
+    public function getNumberUsers()
+    {
+        return $this->users->count();
+    }
+    
 }
