@@ -26,6 +26,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use SecretParty\Bundle\CoreBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations\Post;
+use JMS\Serializer\SerializationContext;
 
 /**
  * User API controller.
@@ -74,7 +75,9 @@ class UserApiController extends FOSRestController
         $em->persist($user);
         $em->flush();
 
-        return $this->handleView($this->view($user));
+        $view = $this->view($user);
+        $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
+        return $this->handleView($view);
     }
 
 }

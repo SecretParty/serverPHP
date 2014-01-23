@@ -38,7 +38,7 @@ class User
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Groups({"party"})
+     * @JMS\Groups({"party", "user"})
      */
     private $id;
 
@@ -46,7 +46,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @JMS\Groups({"party"})
+     * @JMS\Groups({"party", "user"})
      */
     private $name;
 
