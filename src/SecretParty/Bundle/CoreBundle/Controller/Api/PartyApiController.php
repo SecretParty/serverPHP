@@ -38,7 +38,14 @@ class PartyApiController extends FOSRestController
      * Create a new party
      * @ApiDoc(
      *  resource=true,
-     *  description="Create a new party"
+     *  description="Create a new party",
+     *  parameters={
+     *      {"name"="name_party", "dataType"="string", "required"=true},
+     *      {"name"="length_party", "dataType"="int", "required"=true},
+     *      {"name"="thematic_party", "dataType"="int", "required"=true},
+     *      {"name"="name_user", "dataType"="string", "required"=true},
+     *      {"name"="secret_user", "dataType"="int", "required"=true}
+     *  }
      * )
      * @Post("/party")
      */

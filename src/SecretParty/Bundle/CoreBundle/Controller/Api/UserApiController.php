@@ -38,34 +38,37 @@ class UserApiController extends FOSRestController
      * Create a new user
      * @ApiDoc(
      *  resource=true,
-     *  description="Create a new user - take 3 args : name of the user, id of secret and id of party"
+     *  description="Create a new user",
+     *  parameters={
+     *      {"name"="id_secret", "dataType"="int", "required"=true},
+     *      {"name"="id_party", "dataType"="int", "required"=true},
+     *      {"name"="name_user", "dataType"="string", "required"=true}
+     *  }
      * )
      * @Post("/user")
      */
     public function postUserAction(Request $request)
     {
-        $data = json_decode($request->getContent());
+        $secret = $request->request->get('id_secret');
+        $party = $request->request->get('id_party');
+        $name = $request->request->get('name_user');
+
         $em = $this->getDoctrine()->getManager();
 
-        if(!$data->secret || !$data->party || $data->name)
-        {
-            throw new HttpException(400, 'Argument missing');
-        }
-
-        $secret = $em->getRepository("SecretPartyCoreBundle:Secrets")->find($data->secret);
+        $secret = $em->getRepository("SecretPartyCoreBundle:Secrets")->find($secret);
         if(!$secret)
         {
             throw new HttpException(400, 'Secret id is not valid');
         }
 
-        $party = $em->getRepository("SecretPartyCoreBundle:Party")->find($data->party);
+        $party = $em->getRepository("SecretPartyCoreBundle:Party")->find($party);
         if(!$party)
         {
             throw new HttpException(400, 'Party id is not valid');
         }
 
         $user = new User();
-        $user->setName($data->name);
+        $user->setName($name);
         $user->setSecret($secret);
         $user->setParty($party);
         $em->persist($user);
