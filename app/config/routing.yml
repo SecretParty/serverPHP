@@ -8,6 +8,11 @@ secret_party_core_thematic_api:
     resource: SecretParty\Bundle\CoreBundle\Controller\Api\ThematicApiController
     prefix: /api/
 
+secret_party_core_user_api:
+    type:     rest
+    resource: SecretParty\Bundle\CoreBundle\Controller\Api\UserApiController
+    prefix: /api/
+
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc

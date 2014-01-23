@@ -55,6 +55,13 @@ class User
      */
     private $secret;
 
+    /**
+     * @var Party
+     *
+     * @ORM\ManyToOne(targetEntity="Party")
+     * @ORM\JoinColumn(name="party_id", referencedColumnName="id")
+     */
+    private $party;
 
     /**
      * Get id
@@ -110,5 +117,28 @@ class User
     public function getSecret()
     {
         return $this->secret;
+    }
+
+    /**
+     * Set party
+     *
+     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $party
+     * @return User
+     */
+    public function setParty(\SecretParty\Bundle\CoreBundle\Entity\Party $party = null)
+    {
+        $this->party = $party;
+
+        return $this;
+    }
+
+    /**
+     * Get party
+     *
+     * @return \SecretParty\Bundle\CoreBundle\Entity\Party 
+     */
+    public function getParty()
+    {
+        return $this->party;
     }
 }

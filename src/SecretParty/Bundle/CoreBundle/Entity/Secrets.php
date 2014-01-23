@@ -22,12 +22,14 @@ namespace SecretParty\Bundle\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Secrets
  *
  * @ORM\Table(name="secretpartycore_secrets")
  * @ORM\Entity(repositoryClass="SecretParty\Bundle\CoreBundle\Entity\Repository\SecretsRepository")
+ * @JMS\ExclusionPolicy("NONE")
  */
 class Secrets
 {
@@ -45,6 +47,7 @@ class Secrets
      *
      * @ORM\ManyToOne(targetEntity="Thematic", inversedBy="secrets")
      * @ORM\JoinColumn(name="thematic_id", referencedColumnName="id")
+     * @JMS\Exclude()
      */
     private $thematic;
 
