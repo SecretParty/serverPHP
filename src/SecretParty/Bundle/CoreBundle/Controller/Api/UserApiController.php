@@ -20,6 +20,8 @@
 
 namespace SecretParty\Bundle\CoreBundle\Controller\Api;
 
+use SecretParty\Bundle\CoreBundle\Form\JoinUserType;
+use SecretParty\Bundle\CoreBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -40,44 +42,28 @@ class UserApiController extends FOSRestController
      * @ApiDoc(
      *  resource=true,
      *  description="Create a new user",
-     *  parameters={
-     *      {"name"="id_secret", "dataType"="int", "required"=true},
-     *      {"name"="id_party", "dataType"="int", "required"=true},
-     *      {"name"="name_user", "dataType"="string", "required"=true}
-     *  }
+     *  input="SecretParty\Bundle\CoreBundle\Form\JoinUserType"
      * )
      * @Post("/user")
      */
     public function postUserAction(Request $request)
     {
-        $secret = $request->request->get('id_secret');
-        $party = $request->request->get('id_party');
-        $name = $request->request->get('name_user');
-
-        $em = $this->getDoctrine()->getManager();
-
-        $secret = $em->getRepository("SecretPartyCoreBundle:Secrets")->find($secret);
-        if(!$secret)
-        {
-            throw new HttpException(400, 'Secret id is not valid');
-        }
-
-        $party = $em->getRepository("SecretPartyCoreBundle:Party")->find($party);
-        if(!$party)
-        {
-            throw new HttpException(400, 'Party id is not valid');
-        }
-
         $user = new User();
-        $user->setName($name);
-        $user->setSecret($secret);
-        $user->setParty($party);
-        $em->persist($user);
-        $em->flush();
+        $form = $this->createForm(new JoinUserType(),$user);
+        $form->handleRequest($request);
 
-        $view = $this->view($user);
-        $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
-        return $this->handleView($view);
+
+        if($form->isValid()){
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $view = $this->view($user);
+            $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
+            return $this->handleView($view);
+        }
+        return $this->view($form,400);
     }
 
 }
