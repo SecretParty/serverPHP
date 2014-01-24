@@ -20,6 +20,10 @@
 
 namespace SecretParty\Bundle\CoreBundle\Controller\Api;
 
+use SecretParty\Bundle\CoreBundle\Entity\PartyUser;
+use SecretParty\Bundle\CoreBundle\Form\PartyType;
+use SecretParty\Bundle\CoreBundle\Form\PartyUserType;
+use SecretParty\Bundle\CoreBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -37,68 +41,39 @@ class PartyApiController extends FOSRestController
 {
 
     /**
-     * Create a new party
+     * Create a new party and user
      * @ApiDoc(
-     *  resource=true,
      *  description="Create a new party",
-     *  parameters={
-     *      {"name"="name_party", "dataType"="string", "required"=true},
-     *      {"name"="length_party", "dataType"="int", "required"=true},
-     *      {"name"="thematic_party", "dataType"="int", "required"=true},
-     *      {"name"="name_user", "dataType"="string", "required"=true},
-     *      {"name"="secret_user", "dataType"="int", "required"=true}
-     *  }
+     *  input="SecretParty\Bundle\CoreBundle\Form\PartyUserType"
      * )
      * @Post("/party")
      */
     public function postPartyAction(Request $request)
     {
-        $name_party = $request->request->get('name_party');
-        $length_party = $request->request->get('length_party');
-        $thematic_party = $request->request->get('thematic_party');
-        $name_user = $request->request->get('name_user');
-        $secret_user = $request->request->get('secret_user');
-        
-        $em = $this->getDoctrine()->getManager();
+        $partyUser = new PartyUser();
+        $form = $this->createForm(new PartyUserType(),$partyUser);
+        $form->handleRequest($request);
 
-        $thematic_party = $em->getRepository("SecretPartyCoreBundle:Thematic")->find($thematic_party);
-        if(!$thematic_party)
-        {
-            throw new HttpException(400, 'Thematic id is not valid');
+        if($form->isValid()){
+            $partyUser->getParty()->addUser($partyUser->getUser());
+            $partyUser->getUser()->setParty($partyUser->getParty());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($partyUser->getParty());
+            $em->persist($partyUser->getUser());
+            $em->flush();
+
+            $view = $this->view($partyUser->getParty());
+            $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
+            return $this->handleView($view);
+
         }
-
-        $secret_user = $em->getRepository("SecretPartyCoreBundle:Secrets")->find($secret_user);
-        if(!$secret_user)
-        {
-            throw new HttpException(400, 'User secret id is not valid');
-        }
-
-        $party = new Party();
-        $party->setName($name_party);
-        $party->setLength($length_party);
-        $party->setThematic($thematic_party);
-        $party->setDate(new \DateTime());
-
-        $user = new User();
-        $user->setName($name_user);
-        $user->setSecret($secret_user);
-        $user->setParty($party);
-        
-        $party->addUser($user);
-        
-        $em->persist($party);
-        $em->persist($user);
-        $em->flush();
-
-        $view = $this->view($party);
-        $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
-        return $this->handleView($view);
+        return $this->view($form,400);
     }
 
     /**
      * Get party informations
      * @ApiDoc(
-     *  resource=true,
      *  description="Get informations about a party"
      * )
      * @Get("/party/{id}")
@@ -110,7 +85,7 @@ class PartyApiController extends FOSRestController
         $party = $em->getRepository("SecretPartyCoreBundle:Party")->find($id);
         if(!$party)
         {
-            throw new HttpException(400, 'Party id is not valid');
+            throw new \HttpException(400, 'Party id is not valid');
         }
 
 
