@@ -2,15 +2,19 @@
 
 namespace SecretParty\Bundle\CoreBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class PartyUser {
     /**
      * @var Party
+     * @Assert\NotBlank()
      */
     private $party;
 
     /**
      * @var User
+     * @Assert\NotBlank()
      */
     private $user;
 

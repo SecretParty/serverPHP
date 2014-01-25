@@ -63,7 +63,7 @@ class UserApiController extends FOSRestController
             $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
             return $this->handleView($view);
         }
-        return $this->view($form,400);
+        return $this->handleView($this->view($form,400));
     }
 
 }

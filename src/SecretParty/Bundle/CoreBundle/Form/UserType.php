@@ -16,7 +16,10 @@ class UserType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('secret')
+            ->add('secret','entity',array(
+                'class' => 'SecretPartyCoreBundle:Secrets',
+                'property' => 'id'
+            ))
         ;
     }
     

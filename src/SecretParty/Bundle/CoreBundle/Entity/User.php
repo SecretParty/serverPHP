@@ -21,6 +21,7 @@
 
 namespace SecretParty\Bundle\CoreBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -47,6 +48,7 @@ class User
      *
      * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Groups({"party", "user"})
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -55,6 +57,7 @@ class User
      *
      * @ORM\ManyToOne(targetEntity="Secrets")
      * @ORM\JoinColumn(name="secret_id", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     private $secret;
 

@@ -56,6 +56,7 @@ class PartyApiController extends FOSRestController
 
         if($form->isValid()){
             $partyUser->getParty()->addUser($partyUser->getUser());
+            $partyUser->getParty()->setDate(new \DateTime());
             $partyUser->getUser()->setParty($partyUser->getParty());
 
             $em = $this->getDoctrine()->getManager();
@@ -68,7 +69,7 @@ class PartyApiController extends FOSRestController
             return $this->handleView($view);
 
         }
-        return $this->view($form,400);
+        return $this->handleView($this->view($form,400));
     }
 
     /**

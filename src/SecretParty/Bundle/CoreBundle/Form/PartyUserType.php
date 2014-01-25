@@ -15,7 +15,9 @@ class PartyUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('party', new PartyType())
+            ->add('party', new PartyType(), array(
+                'required' => true
+            ))
             ->add('user', new UserType())
         ;
     }
@@ -28,6 +30,7 @@ class PartyUserType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'SecretParty\Bundle\CoreBundle\Entity\PartyUser',
             'csrf_protection'   => false,
+            'cascade_validation' => true
         ));
     }
 

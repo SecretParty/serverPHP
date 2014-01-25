@@ -21,6 +21,7 @@
 
 namespace SecretParty\Bundle\CoreBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -47,6 +48,7 @@ class Party
      *
      * @ORM\Column(name="name", type="string", length=255)
      * @JMS\Groups({"party", "thematic"})
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -55,6 +57,10 @@ class Party
      *
      * @ORM\Column(name="length", type="integer")
      * @JMS\Groups({"party", "thematic"})
+     * @Assert\NotBlank()
+     * @Assert\GreaterThan(
+     *     value = 0
+     * )
      */
     private $length;
 
@@ -72,6 +78,7 @@ class Party
      * @ORM\ManyToOne(targetEntity="Thematic")
      * @ORM\JoinColumn(name="thematic_id", referencedColumnName="id")
      * @JMS\Groups({"party"})
+     * @Assert\NotBlank()
      */
     private $thematic;
 

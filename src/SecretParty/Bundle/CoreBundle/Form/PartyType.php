@@ -17,7 +17,10 @@ class PartyType extends AbstractType
         $builder
             ->add('name')
             ->add('length')
-            ->add('thematic')
+            ->add('thematic','entity',array(
+                'class' => 'SecretPartyCoreBundle:Thematic',
+                'property' => 'id'
+            ))
         ;
     }
     
