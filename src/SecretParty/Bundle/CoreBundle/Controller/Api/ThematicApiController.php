@@ -37,7 +37,6 @@ class ThematicApiController extends FOSRestController
      * Lists all Thematic entities.
      *
      * @ApiDoc(
-     *  resource=true,
      *  description="Lists all Thematic entities."
      * )
      * @Get("/thematics")

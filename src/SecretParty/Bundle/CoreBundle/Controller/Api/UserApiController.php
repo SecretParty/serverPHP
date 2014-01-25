@@ -40,7 +40,6 @@ class UserApiController extends FOSRestController
     /**
      * Create a new user
      * @ApiDoc(
-     *  resource=true,
      *  description="Create a new user",
      *  input="SecretParty\Bundle\CoreBundle\Form\JoinUserType"
      * )
