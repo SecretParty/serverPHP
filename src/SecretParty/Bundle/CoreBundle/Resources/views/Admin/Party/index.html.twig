@@ -9,7 +9,7 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Lenght</th>
+                <th>Length</th>
                 <th>Date</th>
                 <th>Players</th>
             </tr>
@@ -18,7 +18,7 @@
             {% for entity in entities %}
                 <tr>
                     <td><a href="{{ path('admin_party_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
-                    <td>{{ entity.lenght }}</td>
+                    <td>{{ entity.length }}</td>
                     <td>{% if entity.date %}{{ entity.date|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{{ entity.users|length }}</td>
                 </tr>

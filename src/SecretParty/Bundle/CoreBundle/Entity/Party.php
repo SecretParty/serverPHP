@@ -124,26 +124,26 @@ class Party
     }
 
     /**
-     * Set lenght
+     * Set length
      *
-     * @param integer $lenght
+     * @param integer $length
      * @return Party
      */
-    public function setLenght($lenght)
+    public function setLength($length)
     {
-        $this->lenght = $lenght;
+        $this->length = $length;
 
         return $this;
     }
 
     /**
-     * Get lenght
+     * Get length
      *
      * @return integer 
      */
-    public function getLenght()
+    public function getLength()
     {
-        return $this->lenght;
+        return $this->length;
     }
 
     /**
@@ -230,29 +230,6 @@ class Party
     public function getUsers()
     {
         return $this->users;
-    }
-
-    /**
-     * Set length
-     *
-     * @param integer $length
-     * @return Party
-     */
-    public function setLength($length)
-    {
-        $this->length = $length;
-
-        return $this;
-    }
-
-    /**
-     * Get length
-     *
-     * @return integer 
-     */
-    public function getLength()
-    {
-        return $this->length;
     }
     
     /**
