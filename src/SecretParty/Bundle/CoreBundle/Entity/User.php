@@ -66,7 +66,6 @@ class User
      *
      * @ORM\ManyToOne(targetEntity="Party")
      * @ORM\JoinColumn(name="party_id", referencedColumnName="id")
-     * @Assert\NotBlank()
      */
     private $party;
 
