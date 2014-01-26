@@ -15,9 +15,7 @@ class PartyUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('party', new PartyType(), array(
-                'required' => true
-            ))
+            ->add('party', new PartyType())
             ->add('user', new UserType())
         ;
     }

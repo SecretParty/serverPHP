@@ -8,6 +8,7 @@
     <parameters>
         <parameter key="secret_party_core.menu.menu_builder.class">SecretParty\Bundle\CoreBundle\Menu\MenuBuilder</parameter>
         <parameter key="secret_party_core.menu.main.class">Knp\Menu\MenuItem</parameter>
+        <parameter key="secret_party_core.event_listener.join_user.class">SecretParty\Bundle\CoreBundle\EventListener\JoinUserEventListener</parameter>
     </parameters>
 
     <services>
@@ -17,6 +18,9 @@
         <service id="secret_party_core.menu.main"  class="%secret_party_core.menu.main.class%" factory-service="secret_party_core.menu_builder" factory-method="createMainMenu" scope="request">
             <argument type="service" id="request" />
             <tag name="knp_menu.menu" alias="main"/>
+        </service>
+        <service id="secret_party_core.event_listener.join_user"  class="%secret_party_core.event_listener.join_user.class%" >
+            <tag name="kernel.event_listener" event="secret_party_core.event.join_user" method="onJoinUserEvent"/>
         </service>
     </services>
 
