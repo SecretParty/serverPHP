@@ -81,14 +81,13 @@ class PartyApiController extends FOSRestController
      */
     public function getPartyAction($id)
     {
-        
         $em = $this->getDoctrine()->getManager();
         $party = $em->getRepository("SecretPartyCoreBundle:Party")->find($id);
         if(!$party)
         {
-            throw new \HttpException(400, 'Party id is not valid');
-        }
 
+            throw $this->createNotFoundException('Unable to find Party entity.');
+        }
 
         $view = $this->view($party);
         $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));

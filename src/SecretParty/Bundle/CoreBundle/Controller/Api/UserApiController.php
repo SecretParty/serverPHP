@@ -20,6 +20,8 @@
 
 namespace SecretParty\Bundle\CoreBundle\Controller\Api;
 
+use SecretParty\Bundle\CoreBundle\Event\JoinUserEvent;
+use SecretParty\Bundle\CoreBundle\Exception\PartyLogicalException;
 use SecretParty\Bundle\CoreBundle\Form\JoinUserType;
 use SecretParty\Bundle\CoreBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,14 +55,21 @@ class UserApiController extends FOSRestController
 
 
         if($form->isValid()){
+            try{
+                $event = new JoinUserEvent($user);
+                $this->get('event_dispatcher')->dispatch('secret_party_core.event.join_user',$event);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
 
-            $view = $this->view($user);
-            $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
-            return $this->handleView($view);
+                $view = $this->view($user);
+                $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
+                return $this->handleView($view);
+            }
+            catch(PartyLogicalException $e){
+                return $this->handleView($this->view(array("code" => 400, "message" => $e->getMessage()),400));
+            }
         }
         return $this->handleView($this->view($form,400));
     }
