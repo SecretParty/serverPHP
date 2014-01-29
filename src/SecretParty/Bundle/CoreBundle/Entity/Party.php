@@ -69,7 +69,7 @@ class Party
      *
      * @ORM\Column(name="date", type="datetime")
      * @JMS\Groups({"party", "thematic"})
-     * @JMS\Accessor(getter="getDate")
+     * @JMS\Accessor(getter="getTimestamp")
      * @JMS\Type("integer")
      */
     private $date;
@@ -167,6 +167,16 @@ class Party
      * @return \DateTime
      */
     public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Get date
+     *
+     * @return int
+     */
+    public function getTimestamp()
     {
         return $this->date->getTimestamp();
     }
