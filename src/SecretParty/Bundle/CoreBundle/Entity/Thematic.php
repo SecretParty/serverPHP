@@ -65,13 +65,13 @@ class Thematic
      * @var Party
      *
      * @ORM\OneToMany(targetEntity="Party", mappedBy="thematic", cascade={"persist"})
-     * @JMS\Groups({"thematic"})
      */
     private $parties;
 
     function __construct()
     {
         $this->secrets = new ArrayCollection();
+        $this->parties = new ArrayCollection();
     }
 
 

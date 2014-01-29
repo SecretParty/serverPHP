@@ -64,10 +64,9 @@ class User
     /**
      * @var Party
      *
-     * @ORM\ManyToOne(targetEntity="Party")
-     * @ORM\JoinColumn(name="party_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Party")
      */
-    private $party;
+    private $parties;
 
     /**
      * Get id
@@ -126,25 +125,43 @@ class User
     }
 
     /**
-     * Set party
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->parties = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add parties
      *
-     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $party
+     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $parties
      * @return User
      */
-    public function setParty(\SecretParty\Bundle\CoreBundle\Entity\Party $party = null)
+    public function addParty(\SecretParty\Bundle\CoreBundle\Entity\Party $parties)
     {
-        $this->party = $party;
+        $this->parties[] = $parties;
 
         return $this;
     }
 
     /**
-     * Get party
+     * Remove parties
      *
-     * @return \SecretParty\Bundle\CoreBundle\Entity\Party 
+     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $parties
      */
-    public function getParty()
+    public function removeParty(\SecretParty\Bundle\CoreBundle\Entity\Party $parties)
     {
-        return $this->party;
+        $this->parties->removeElement($parties);
+    }
+
+    /**
+     * Get parties
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getParties()
+    {
+        return $this->parties;
     }
 }

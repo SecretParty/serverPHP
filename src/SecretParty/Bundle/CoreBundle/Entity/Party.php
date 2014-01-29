@@ -87,7 +87,7 @@ class Party
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="party", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="User", cascade={"persist"})
      * @JMS\Groups({"party"})
      */
     private $users;
