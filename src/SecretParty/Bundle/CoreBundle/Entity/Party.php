@@ -69,6 +69,8 @@ class Party
      *
      * @ORM\Column(name="date", type="datetime")
      * @JMS\Groups({"party", "thematic"})
+     * @JMS\Accessor(getter="getDate")
+     * @JMS\Type("integer")
      */
     private $date;
 
@@ -149,12 +151,12 @@ class Party
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param int $date
      * @return Party
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        $this->date->setTimestamp($date);
 
         return $this;
     }
@@ -162,18 +164,20 @@ class Party
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
-        return $this->date;
+        return $this->date->getTimestamp();
     }
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->date = new \DateTime();
     }
 
     /**
