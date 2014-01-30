@@ -46,7 +46,7 @@ class PartyApiController extends FOSRestController
 {
 
     /**
-     * Lists all Party entities.
+     * Lists all current Party entities.
      *
      * @ApiDoc(
      *  output={
@@ -65,10 +65,7 @@ class PartyApiController extends FOSRestController
     {
         $em = $this->getDoctrine()->getManager();
 
-        if($request->query->has("thematic"))
-            $entities = $em->getRepository('SecretPartyCoreBundle:Party')->findByThematic($request->query->get("thematic"));
-        else
-            $entities = $em->getRepository('SecretPartyCoreBundle:Party')->findAll();
+        $entities = $em->getRepository('SecretPartyCoreBundle:Party')->findAllNotFinish($request->query->get("thematic",null));
 
         return $this->view($entities)->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
     }

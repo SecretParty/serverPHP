@@ -31,4 +31,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class PartyRepository extends EntityRepository
 {
+    public function findAllNotFinish($thematic = null)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where("p.date>CURRENT_TIMESTAMP()-p.length");
+        if(!empty($thematic))
+            $query->andWhere("p.thematic = :thematic")
+                ->setParameter("thematic",$thematic);
+        return $query->getQuery()->getResult();
+    }
 }
