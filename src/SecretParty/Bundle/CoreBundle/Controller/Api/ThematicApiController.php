@@ -37,7 +37,11 @@ class ThematicApiController extends FOSRestController
      * Lists all Thematic entities.
      *
      * @ApiDoc(
-     *  description="Lists all Thematic entities."
+     *  description="Lists all Thematic entities.",
+     *  output={
+     *   "class"="SecretParty\Bundle\CoreBundle\Entity\Thematic",
+     *   "groups"={"thematic"}
+     * }
      * )
      * @Get("/thematics")
      */

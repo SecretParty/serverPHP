@@ -48,7 +48,11 @@ class PartyApiController extends FOSRestController
     /**
      * Lists all Party entities.
      *
-     * @ApiDoc()
+     * @ApiDoc(
+     *  output={
+     *   "class"="SecretParty\Bundle\CoreBundle\Entity\Party",
+     *   "groups"={"party"}
+     * })
      * @Rest\Get("/parties")
      * @Rest\View()
      */
@@ -65,7 +69,11 @@ class PartyApiController extends FOSRestController
      * Create a new party and user
      * @ApiDoc(
      *  description="Create a new party",
-     *  input="SecretParty\Bundle\CoreBundle\Form\PartyUserType"
+     *  input="SecretParty\Bundle\CoreBundle\Form\PartyUserType",
+     *  output={
+     *   "class"="SecretParty\Bundle\CoreBundle\Entity\Party",
+     *   "groups"={"party"}
+     * }
      * )
      * @Rest\Post("/party")
      * @Rest\View
@@ -106,7 +114,11 @@ class PartyApiController extends FOSRestController
     /**
      * Get party informations
      * @ApiDoc(
-     *  description="Get informations about a party"
+     *  description="Get informations about a party",
+     *  output={
+     *   "class"="SecretParty\Bundle\CoreBundle\Entity\Party",
+     *   "groups"={"party"}
+     * }
      * )
      * @Rest\Get("/party/{id}")
      * @Rest\View
@@ -122,7 +134,11 @@ class PartyApiController extends FOSRestController
      * Create a new user
      * @ApiDoc(
      *  description="Join a new user",
-     *  input="SecretParty\Bundle\CoreBundle\Form\UserPartySecretType"
+     *  input="SecretParty\Bundle\CoreBundle\Form\UserPartySecretType",
+     *  output={
+     *   "class"="SecretParty\Bundle\CoreBundle\Entity\Party",
+     *   "groups"={"party"}
+     * }
      * )
      * @Rest\Post("/party/{id}/join")
      * @Rest\View

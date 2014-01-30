@@ -42,7 +42,11 @@ class UserApiController extends FOSRestController
 {
     /**
      * @ApiDoc(
-     *  description="Create a new user"
+     *  description="Create a new user",
+     *  output={
+     *   "class"="SecretParty\Bundle\CoreBundle\Entity\User",
+     *   "groups"={"user"}
+     * }
      * )
      * @Rest\Get("/user/{id}")
      * @Rest\View
@@ -57,14 +61,18 @@ class UserApiController extends FOSRestController
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        return $this->view($entity);
+        return $this->view($entity)->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
     }
 
     /**
      * Create a new user
      * @ApiDoc(
      *  description="Create a new user",
-     *  input="SecretParty\Bundle\CoreBundle\Form\UserType"
+     *  input="SecretParty\Bundle\CoreBundle\Form\UserType",
+     *  output={
+     *   "class"="SecretParty\Bundle\CoreBundle\Entity\User",
+     *   "groups"={"user"}
+     * }
      * )
      * @Rest\Post("/user")
      * @Rest\View
@@ -92,7 +100,11 @@ class UserApiController extends FOSRestController
     /**
      * Update a new user
      * @ApiDoc(
-     *  input="SecretParty\Bundle\CoreBundle\Form\UserType"
+     *  input="SecretParty\Bundle\CoreBundle\Form\UserType",
+     *  output={
+     *   "class"="SecretParty\Bundle\CoreBundle\Entity\User",
+     *   "groups"={"user"}
+     * }
      * )
      * @Rest\Put("/user/{id}")
      * @Rest\View
