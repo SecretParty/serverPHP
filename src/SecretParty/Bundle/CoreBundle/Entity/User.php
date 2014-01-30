@@ -66,6 +66,7 @@ class User
      *
      * @ORM\ManyToOne(targetEntity="Party")
      * @ORM\JoinColumn(name="party_id", referencedColumnName="id")
+     * @JMS\Groups({"user"})
      */
     private $party;
 

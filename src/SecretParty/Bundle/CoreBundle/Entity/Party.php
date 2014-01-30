@@ -39,7 +39,7 @@ class Party
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Groups({"party", "thematic"})
+     * @JMS\Groups({"party", "thematic", "user"})
      */
     private $id;
 
@@ -47,7 +47,7 @@ class Party
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @JMS\Groups({"party", "thematic"})
+     * @JMS\Groups({"party", "thematic", "user"})
      * @Assert\NotBlank()
      */
     private $name;
@@ -56,7 +56,7 @@ class Party
      * @var integer
      *
      * @ORM\Column(name="length", type="integer")
-     * @JMS\Groups({"party", "thematic"})
+     * @JMS\Groups({"party", "thematic", "user"})
      * @Assert\NotBlank()
      * @Assert\GreaterThan(
      *     value = 0
@@ -68,9 +68,9 @@ class Party
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
-     * @JMS\Groups({"party", "thematic"})
+     * @JMS\Groups({"party", "thematic", "user"})
      * @JMS\Accessor(getter="getTimestamp")
-     * @JMS\Type("integer")
+     * @JMS\Type("integer") 
      */
     private $date;
 
@@ -79,7 +79,7 @@ class Party
      *
      * @ORM\ManyToOne(targetEntity="Thematic")
      * @ORM\JoinColumn(name="thematic_id", referencedColumnName="id")
-     * @JMS\Groups({"party"})
+     * @JMS\Groups({"party", "user"})
      * @Assert\NotBlank()
      */
     private $thematic;
@@ -88,7 +88,7 @@ class Party
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="User", mappedBy="party", cascade={"persist"})
-     * @JMS\Groups({"party"})
+     * @JMS\Groups({"party", "user"})
      */
     private $users;
 
@@ -156,7 +156,7 @@ class Party
      */
     public function setDate($date)
     {
-        $this->date->setTimestamp($date);
+        $this->date = $date;
 
         return $this;
     }
