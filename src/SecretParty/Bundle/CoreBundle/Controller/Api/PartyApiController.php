@@ -58,7 +58,7 @@ class PartyApiController extends FOSRestController
 
         $entities = $em->getRepository('SecretPartyCoreBundle:Party')->findAll();
 
-        return $this->view($entities);
+        return $this->view($entities)->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
     }
 
     /**
@@ -77,16 +77,21 @@ class PartyApiController extends FOSRestController
         $form->handleRequest($request);
 
         if($form->isValid()){
+            $user = $partyUser->getUser();
             $party = $partyUser->getParty();
-            $userPartySecret = new UserPartySecret();
-            $userPartySecret->setParty($party);
-            $userPartySecret->setSecret($partyUser->getSecret());
-            $userPartySecret->setUser($partyUser->getUser());
-
             $party->setDate(new \DateTime());
 
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($party);
+            $em->flush();
+
+            $userPartySecret = new UserPartySecret();
+            $userPartySecret->setParty($party);
+            $userPartySecret->setSecret($partyUser->getSecret());
+            $userPartySecret->setUser($user);
+            $party->addUser($userPartySecret);
+            $user->addParty($userPartySecret);
             $em->persist($userPartySecret);
             $em->flush();
 
@@ -109,6 +114,7 @@ class PartyApiController extends FOSRestController
     public function getPartyAction($id)
     {
         $view = $this->view($this->getParty($id));
+        $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
         return $view;
     }
 
@@ -116,7 +122,7 @@ class PartyApiController extends FOSRestController
      * Create a new user
      * @ApiDoc(
      *  description="Join a new user",
-     *  input="SecretParty\Bundle\CoreBundle\Form\UserType"
+     *  input="SecretParty\Bundle\CoreBundle\Form\UserPartySecretType"
      * )
      * @Rest\Post("/party/{id}/join")
      * @Rest\View
@@ -126,12 +132,12 @@ class PartyApiController extends FOSRestController
         $party = $this->getParty($id);
 
         $userPartySecret = new UserPartySecret();
+        $userPartySecret->setParty($party);
         $form = $this->createForm(new UserPartySecretType(),$userPartySecret);
         $form->handleRequest($request);
 
         if($form->isValid()){
             try{
-                $userPartySecret->setParty($party);
 
                 $event = new JoinUserEvent($party);
                 $this->get('event_dispatcher')->dispatch('secret_party_core.event.join_user',$event);
@@ -141,7 +147,7 @@ class PartyApiController extends FOSRestController
                 $em->flush();
 
                 $view = $this->view($party);
-                $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
+                $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
                 return $view;
             }
             catch(PartyLogicalException $e){

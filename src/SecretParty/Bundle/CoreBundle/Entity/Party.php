@@ -69,7 +69,7 @@ class Party
      *
      * @ORM\Column(name="date", type="datetime")
      * @JMS\Groups({"party", "thematic"})
-     * @JMS\Accessor(getter="getDate")
+     * @JMS\Accessor(getter="getTimestamp")
      * @JMS\Type("integer")
      */
     private $date;
@@ -85,6 +85,7 @@ class Party
     private $thematic;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="UserPartySecret", mappedBy="party")
      * @JMS\Groups({"party"})
@@ -103,7 +104,7 @@ class Party
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -126,7 +127,7 @@ class Party
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -149,7 +150,7 @@ class Party
     /**
      * Get length
      *
-     * @return integer 
+     * @return integer
      */
     public function getLength()
     {
@@ -164,7 +165,7 @@ class Party
      */
     public function setDate($date)
     {
-        $this->date->setTimestamp($date);
+        $this->date = $date;
 
         return $this;
     }
@@ -175,6 +176,16 @@ class Party
      * @return \DateTime
      */
     public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Get date
+     *
+     * @return int
+     */
+    public function getTimestamp()
     {
         return $this->date->getTimestamp();
     }
@@ -195,7 +206,7 @@ class Party
     /**
      * Get thematic
      *
-     * @return \SecretParty\Bundle\CoreBundle\Entity\Thematic 
+     * @return \SecretParty\Bundle\CoreBundle\Entity\Thematic
      */
     public function getThematic()
     {
@@ -205,14 +216,13 @@ class Party
     /**
      * Get number of users
      * @return integer
+     * @JMS\Groups({"party"})
      * @JMS\VirtualProperty
-     * @JMS\Groups({"thematic"})
      */
     public function getThematicId()
     {
         return $this->thematic->getId();
     }
-    
 
     /**
      * Add users
@@ -240,10 +250,22 @@ class Party
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsers()
     {
         return $this->users;
     }
+
+    /**
+     * Get number of users
+     * @return integer
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"thematic"})
+     */
+    public function getNumberUsers()
+    {
+        return $this->users->count();
+    }
+
 }

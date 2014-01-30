@@ -21,7 +21,7 @@ class JoinUserEvent extends Event{
      */
     protected $party;
 
-    function __construct( User $party)
+    function __construct( Party $party)
     {
         $this->party = $party;
     }

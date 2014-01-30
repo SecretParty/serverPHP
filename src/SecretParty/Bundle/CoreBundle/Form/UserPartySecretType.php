@@ -43,6 +43,6 @@ class UserPartySecretType extends AbstractType
      */
     public function getName()
     {
-        return 'secretparty_bundle_corebundle_userpartysecret';
+        return 'party_user_secret';
     }
 }

@@ -4,12 +4,16 @@ namespace SecretParty\Bundle\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * UserPartySecret
  *
  * @ORM\Table(name="secretpartycore_userpartysecret")
  * @ORM\Entity
+ * @UniqueEntity({"user","party"})
  */
 class UserPartySecret
 {
@@ -29,6 +33,7 @@ class UserPartySecret
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @Assert\NotBlank()
      * @ORM\Id
+     * @JMS\Groups({"party"})
      */
     private $user;
 

@@ -56,7 +56,7 @@ class User
     /**
      * @var UserPartySecret
      *
-     * @ORM\OneToMany(targetEntity="UserPartySecret", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserPartySecret", mappedBy="user", cascade={"persist","remove"})
      * @JMS\Exclude
      */
     private $parties;
