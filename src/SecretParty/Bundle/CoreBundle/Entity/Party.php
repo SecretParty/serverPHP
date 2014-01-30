@@ -77,20 +77,28 @@ class Party
     /**
      * @var Thematic
      *
-     * @ORM\ManyToOne(targetEntity="Thematic")
+     * @ORM\ManyToOne(targetEntity="Thematic",inversedBy="parties")
      * @ORM\JoinColumn(name="thematic_id", referencedColumnName="id")
-     * @JMS\Groups({"party"})
+     * @JMS\Exclude
      * @Assert\NotBlank()
      */
     private $thematic;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="User", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="UserPartySecret", mappedBy="party")
      * @JMS\Groups({"party"})
      */
     private $users;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->date = new \DateTime();
+    }
 
     /**
      * Get id
@@ -172,15 +180,6 @@ class Party
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->date = new \DateTime();
-    }
-
-    /**
      * Set thematic
      *
      * @param \SecretParty\Bundle\CoreBundle\Entity\Thematic $thematic
@@ -204,12 +203,24 @@ class Party
     }
 
     /**
+     * Get number of users
+     * @return integer
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"thematic"})
+     */
+    public function getThematicId()
+    {
+        return $this->thematic->getId();
+    }
+    
+
+    /**
      * Add users
      *
-     * @param \SecretParty\Bundle\CoreBundle\Entity\User $users
+     * @param \SecretParty\Bundle\CoreBundle\Entity\UserPartySecret $users
      * @return Party
      */
-    public function addUser(\SecretParty\Bundle\CoreBundle\Entity\User $users)
+    public function addUser(\SecretParty\Bundle\CoreBundle\Entity\UserPartySecret $users)
     {
         $this->users[] = $users;
 
@@ -219,9 +230,9 @@ class Party
     /**
      * Remove users
      *
-     * @param \SecretParty\Bundle\CoreBundle\Entity\User $users
+     * @param \SecretParty\Bundle\CoreBundle\Entity\UserPartySecret $users
      */
-    public function removeUser(\SecretParty\Bundle\CoreBundle\Entity\User $users)
+    public function removeUser(\SecretParty\Bundle\CoreBundle\Entity\UserPartySecret $users)
     {
         $this->users->removeElement($users);
     }
@@ -235,16 +246,4 @@ class Party
     {
         return $this->users;
     }
-    
-    /**
-     * Get number of users
-     * @return integer
-     * @JMS\VirtualProperty
-     * @JMS\Groups({"thematic"})
-     */
-    public function getNumberUsers()
-    {
-        return $this->users->count();
-    }
-    
 }

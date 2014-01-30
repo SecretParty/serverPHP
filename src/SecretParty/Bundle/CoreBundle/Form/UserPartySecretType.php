@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class JoinUserType extends AbstractType
+class UserPartySecretType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,13 +15,12 @@ class JoinUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('secret','entity', array(
+            ->add('secret','entity',array(
                 'class' => 'SecretPartyCoreBundle:Secrets',
                 'property' => 'id'
             ))
-            ->add('party','entity', array(
-                'class' => 'SecretPartyCoreBundle:Party',
+            ->add('user','entity',array(
+                'class' => 'SecretPartyCoreBundle:User',
                 'property' => 'id'
             ))
         ;
@@ -33,7 +32,7 @@ class JoinUserType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'SecretParty\Bundle\CoreBundle\Entity\User',
+            'data_class' => 'SecretParty\Bundle\CoreBundle\Entity\UserPartySecret',
             'csrf_protection'   => false,
             'cascade_validation' => true
         ));
@@ -44,6 +43,6 @@ class JoinUserType extends AbstractType
      */
     public function getName()
     {
-        return 'user';
+        return 'secretparty_bundle_corebundle_userpartysecret';
     }
 }

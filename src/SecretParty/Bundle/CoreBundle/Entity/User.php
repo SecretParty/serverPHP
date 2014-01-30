@@ -21,6 +21,7 @@
 
 namespace SecretParty\Bundle\CoreBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -53,20 +54,19 @@ class User
     private $name;
 
     /**
-     * @var Secrets
+     * @var UserPartySecret
      *
-     * @ORM\ManyToOne(targetEntity="Secrets")
-     * @ORM\JoinColumn(name="secret_id", referencedColumnName="id")
-     * @Assert\NotBlank()
-     */
-    private $secret;
-
-    /**
-     * @var Party
-     *
-     * @ORM\ManyToMany(targetEntity="Party")
+     * @ORM\OneToMany(targetEntity="UserPartySecret", mappedBy="user")
+     * @JMS\Exclude
      */
     private $parties;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    }
 
     /**
      * Get id
@@ -101,44 +101,14 @@ class User
         return $this->name;
     }
 
-    /**
-     * Set secret
-     *
-     * @param \SecretParty\Bundle\CoreBundle\Entity\Secrets $secret
-     * @return User
-     */
-    public function setSecret(\SecretParty\Bundle\CoreBundle\Entity\Secrets $secret = null)
-    {
-        $this->secret = $secret;
-
-        return $this;
-    }
-
-    /**
-     * Get secret
-     *
-     * @return \SecretParty\Bundle\CoreBundle\Entity\Secrets 
-     */
-    public function getSecret()
-    {
-        return $this->secret;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->parties = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add parties
      *
-     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $parties
+     * @param \SecretParty\Bundle\CoreBundle\Entity\UserPartySecret $parties
      * @return User
      */
-    public function addParty(\SecretParty\Bundle\CoreBundle\Entity\Party $parties)
+    public function addParty(\SecretParty\Bundle\CoreBundle\Entity\UserPartySecret $parties)
     {
         $this->parties[] = $parties;
 
@@ -148,9 +118,9 @@ class User
     /**
      * Remove parties
      *
-     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $parties
+     * @param \SecretParty\Bundle\CoreBundle\Entity\UserPartySecret $parties
      */
-    public function removeParty(\SecretParty\Bundle\CoreBundle\Entity\Party $parties)
+    public function removeParty(\SecretParty\Bundle\CoreBundle\Entity\UserPartySecret $parties)
     {
         $this->parties->removeElement($parties);
     }

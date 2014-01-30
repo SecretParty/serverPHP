@@ -20,6 +20,7 @@
 
 namespace SecretParty\Bundle\CoreBundle\Controller\Api;
 
+use FOS\RestBundle\Util\Codes;
 use SecretParty\Bundle\CoreBundle\Event\JoinUserEvent;
 use SecretParty\Bundle\CoreBundle\Exception\PartyLogicalException;
 use SecretParty\Bundle\CoreBundle\Form\JoinUserType;
@@ -31,6 +32,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use SecretParty\Bundle\CoreBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations\Post;
 use JMS\Serializer\SerializationContext;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 /**
  * User API controller.
@@ -38,40 +40,109 @@ use JMS\Serializer\SerializationContext;
  */
 class UserApiController extends FOSRestController
 {
+    /**
+     * @ApiDoc(
+     *  description="Create a new user"
+     * )
+     * @Rest\Get("/user/{id}")
+     * @Rest\View
+     */
+    public function getUserAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('SecretPartyCoreBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        return $this->view($entity);
+    }
 
     /**
      * Create a new user
      * @ApiDoc(
      *  description="Create a new user",
-     *  input="SecretParty\Bundle\CoreBundle\Form\JoinUserType"
+     *  input="SecretParty\Bundle\CoreBundle\Form\UserType"
      * )
-     * @Post("/user")
+     * @Rest\Post("/user")
+     * @Rest\View
      */
     public function postUserAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(new JoinUserType(),$user);
+        $form = $this->createForm(new UserType(),$user);
         $form->handleRequest($request);
 
+        if($form->isValid()){
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $view = $this->view($user);
+            $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
+            return $view;
+
+        }
+        return $this->view($form,Codes::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Update a new user
+     * @ApiDoc(
+     *  input="SecretParty\Bundle\CoreBundle\Form\UserType"
+     * )
+     * @Rest\Put("/user/{id}")
+     * @Rest\View
+     */
+    public function putUserAction(Request $request,$id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $em->getRepository('SecretPartyCoreBundle:User')->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $form = $this->createForm(new UserType(),$user);
+        $form->handleRequest($request);
 
         if($form->isValid()){
-            try{
-                $event = new JoinUserEvent($user);
-                $this->get('event_dispatcher')->dispatch('secret_party_core.event.join_user',$event);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
 
-                $view = $this->view($user);
-                $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
-                return $this->handleView($view);
-            }
-            catch(PartyLogicalException $e){
-                return $this->handleView($this->view(array("code" => 400, "message" => $e->getMessage()),400));
-            }
+            $view = $this->view($user);
+            $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
+            return $view;
+
         }
-        return $this->handleView($this->view($form,400));
+        return $this->view($form,Codes::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Delete user
+     * @ApiDoc()
+     * @Rest\Delete("/user/{id}")
+     * @Rest\View
+     */
+    public function deleteUserAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('SecretPartyCoreBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $em->remove($entity);
+        $em->flush();
+
+        return $this->view(null,Codes::HTTP_NO_CONTENT);
     }
 
 }

@@ -20,15 +20,20 @@
 
 namespace SecretParty\Bundle\CoreBundle\Controller\Api;
 
+use FOS\RestBundle\Util\Codes;
 use SecretParty\Bundle\CoreBundle\Entity\PartyUser;
+use SecretParty\Bundle\CoreBundle\Entity\UserPartySecret;
+use SecretParty\Bundle\CoreBundle\Event\JoinUserEvent;
+use SecretParty\Bundle\CoreBundle\Exception\PartyLogicalException;
+use SecretParty\Bundle\CoreBundle\Form\JoinUserType;
 use SecretParty\Bundle\CoreBundle\Form\PartyType;
 use SecretParty\Bundle\CoreBundle\Form\PartyUserType;
+use SecretParty\Bundle\CoreBundle\Form\UserPartySecretType;
 use SecretParty\Bundle\CoreBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use FOS\RestBundle\Controller\Annotations\Post;
-use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use SecretParty\Bundle\CoreBundle\Entity\Party;
 use SecretParty\Bundle\CoreBundle\Entity\User;
 use JMS\Serializer\SerializationContext;
@@ -41,12 +46,29 @@ class PartyApiController extends FOSRestController
 {
 
     /**
+     * Lists all Party entities.
+     *
+     * @ApiDoc()
+     * @Rest\Get("/parties")
+     * @Rest\View()
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('SecretPartyCoreBundle:Party')->findAll();
+
+        return $this->view($entities);
+    }
+
+    /**
      * Create a new party and user
      * @ApiDoc(
      *  description="Create a new party",
      *  input="SecretParty\Bundle\CoreBundle\Form\PartyUserType"
      * )
-     * @Post("/party")
+     * @Rest\Post("/party")
+     * @Rest\View
      */
     public function postPartyAction(Request $request)
     {
@@ -55,21 +77,25 @@ class PartyApiController extends FOSRestController
         $form->handleRequest($request);
 
         if($form->isValid()){
-            $partyUser->getParty()->addUser($partyUser->getUser());
-            $partyUser->getParty()->setDate(new \DateTime());
-            $partyUser->getUser()->setParty($partyUser->getParty());
+            $party = $partyUser->getParty();
+            $userPartySecret = new UserPartySecret();
+            $userPartySecret->setParty($party);
+            $userPartySecret->setSecret($partyUser->getSecret());
+            $userPartySecret->setUser($partyUser->getUser());
+
+            $party->setDate(new \DateTime());
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($partyUser->getParty());
-            $em->persist($partyUser->getUser());
+            $em->persist($party);
+            $em->persist($userPartySecret);
             $em->flush();
 
             $view = $this->view($partyUser->getParty());
             $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
-            return $this->handleView($view);
+            return $view;
 
         }
-        return $this->handleView($this->view($form,400));
+        return $this->view($form,Codes::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -77,21 +103,68 @@ class PartyApiController extends FOSRestController
      * @ApiDoc(
      *  description="Get informations about a party"
      * )
-     * @Get("/party/{id}")
+     * @Rest\Get("/party/{id}")
+     * @Rest\View
      */
     public function getPartyAction($id)
     {
+        $view = $this->view($this->getParty($id));
+        return $view;
+    }
+
+    /**
+     * Create a new user
+     * @ApiDoc(
+     *  description="Join a new user",
+     *  input="SecretParty\Bundle\CoreBundle\Form\UserType"
+     * )
+     * @Rest\Post("/party/{id}/join")
+     * @Rest\View
+     */
+    public function postUserAction(Request $request,$id)
+    {
+        $party = $this->getParty($id);
+
+        $userPartySecret = new UserPartySecret();
+        $form = $this->createForm(new UserPartySecretType(),$userPartySecret);
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+            try{
+                $userPartySecret->setParty($party);
+
+                $event = new JoinUserEvent($party);
+                $this->get('event_dispatcher')->dispatch('secret_party_core.event.join_user',$event);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($userPartySecret);
+                $em->flush();
+
+                $view = $this->view($party);
+                $view->setSerializationContext(SerializationContext::create()->setGroups(array('user')));
+                return $view;
+            }
+            catch(PartyLogicalException $e){
+                return $this->view(array("code" => Codes::HTTP_BAD_REQUEST, "message" => $e->getMessage()),Codes::HTTP_BAD_REQUEST);
+            }
+        }
+        return $this->view($form,Codes::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @param $id
+     * @return Party
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function getParty($id)
+    {
         $em = $this->getDoctrine()->getManager();
         $party = $em->getRepository("SecretPartyCoreBundle:Party")->find($id);
-        if(!$party)
-        {
+        if (!$party) {
 
             throw $this->createNotFoundException('Unable to find Party entity.');
         }
-
-        $view = $this->view($party);
-        $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
-        return $this->handleView($view);
+        return $party;
     }
 
 }

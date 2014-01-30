@@ -16,7 +16,14 @@ class PartyUserType extends AbstractType
     {
         $builder
             ->add('party', new PartyType())
-            ->add('user', new UserType())
+            ->add('secret','entity',array(
+                'class' => 'SecretPartyCoreBundle:Secrets',
+                'property' => 'id'
+            ))
+            ->add('user','entity',array(
+                'class' => 'SecretPartyCoreBundle:User',
+                'property' => 'id'
+            ))
         ;
     }
     

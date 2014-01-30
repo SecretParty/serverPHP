@@ -16,10 +16,6 @@ class UserType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('secret','entity',array(
-                'class' => 'SecretPartyCoreBundle:Secrets',
-                'property' => 'id'
-            ))
         ;
     }
     
@@ -29,7 +25,9 @@ class UserType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'SecretParty\Bundle\CoreBundle\Entity\User'
+            'data_class' => 'SecretParty\Bundle\CoreBundle\Entity\User',
+            'csrf_protection'   => false,
+            'cascade_validation' => true
         ));
     }
 

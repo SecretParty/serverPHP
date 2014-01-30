@@ -15,9 +15,9 @@ use SecretParty\Bundle\CoreBundle\Exception\PartyLogicalException;
 class JoinUserEventListener {
 
     public function onJoinUserEvent(JoinUserEvent $event){
-        $user = $event->getUser();
+        $party = $event->getParty();
 
-        $end = $user->getParty()->getDate()->add(new \DateInterval('PT'.$user->getParty()->getLength().'S'));
+        $end = $party->getDate()->add(new \DateInterval('PT'.$party->getLength().'S'));
 
         // Check if end date is not passed
         if($end <= new \DateTime()){

@@ -17,21 +17,21 @@ class JoinUserEvent extends Event{
 
 
     /**
-     * @var \SecretParty\Bundle\CoreBundle\Entity\User
+     * @var \SecretParty\Bundle\CoreBundle\Entity\Party
      */
-    protected $user;
+    protected $party;
 
-    function __construct( User $user)
+    function __construct( User $party)
     {
-        $this->user = $user;
+        $this->party = $party;
     }
 
     /**
-     * @return \SecretParty\Bundle\CoreBundle\Entity\User
+     * @return \SecretParty\Bundle\CoreBundle\Entity\Party
      */
-    public function getUser()
+    public function getParty()
     {
-        return $this->user;
+        return $this->party;
     }
 
 

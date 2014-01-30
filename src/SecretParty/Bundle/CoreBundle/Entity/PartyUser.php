@@ -19,6 +19,28 @@ class PartyUser {
     private $user;
 
     /**
+     * @var Secrets
+     * @Assert\NotBlank()
+     */
+    private $secret;
+
+    /**
+     * @param \SecretParty\Bundle\CoreBundle\Entity\Secrets $secret
+     */
+    public function setSecret($secret)
+    {
+        $this->secret = $secret;
+    }
+
+    /**
+     * @return \SecretParty\Bundle\CoreBundle\Entity\Secrets
+     */
+    public function getSecret()
+    {
+        return $this->secret;
+    }
+
+    /**
      * @param mixed $party
      */
     public function setParty(Party $party)
