@@ -51,16 +51,24 @@ class PartyApiController extends FOSRestController
      * @ApiDoc(
      *  output={
      *   "class"="SecretParty\Bundle\CoreBundle\Entity\Party",
-     *   "groups"={"party"}
-     * })
+     *   "groups"={"party"},
+     * },
+     *  filters={
+     *      {"name"="thematic", "dataType"="integer"},
+     *
+     *  }
+     * )
      * @Rest\Get("/parties")
      * @Rest\View()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('SecretPartyCoreBundle:Party')->findAll();
+        if($request->query->has("thematic"))
+            $entities = $em->getRepository('SecretPartyCoreBundle:Party')->findByThematic($request->query->get("thematic"));
+        else
+            $entities = $em->getRepository('SecretPartyCoreBundle:Party')->findAll();
 
         return $this->view($entities)->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
     }
