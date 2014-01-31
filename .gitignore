@@ -12,3 +12,5 @@
 /composer.lock
 /.idea/*
 *~
+*.sublime-project
+*.sublime-workspace
