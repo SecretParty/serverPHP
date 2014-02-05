@@ -21,10 +21,12 @@
 namespace SecretParty\Bundle\CoreBundle\Controller\Api;
 
 use FOS\RestBundle\Util\Codes;
+use SecretParty\Bundle\CoreBundle\Entity\Buzz;
 use SecretParty\Bundle\CoreBundle\Entity\PartyUser;
 use SecretParty\Bundle\CoreBundle\Entity\UserPartySecret;
 use SecretParty\Bundle\CoreBundle\Event\JoinUserEvent;
 use SecretParty\Bundle\CoreBundle\Exception\PartyLogicalException;
+use SecretParty\Bundle\CoreBundle\Form\BuzzType;
 use SecretParty\Bundle\CoreBundle\Form\JoinUserType;
 use SecretParty\Bundle\CoreBundle\Form\PartyType;
 use SecretParty\Bundle\CoreBundle\Form\PartyUserType;
@@ -174,6 +176,52 @@ class PartyApiController extends FOSRestController
             catch(PartyLogicalException $e){
                 return $this->view(array("code" => Codes::HTTP_BAD_REQUEST, "message" => $e->getMessage()),Codes::HTTP_BAD_REQUEST);
             }
+        }
+        return $this->view($form,Codes::HTTP_BAD_REQUEST);
+    }
+
+
+    /**
+     * Buzz user
+     * @ApiDoc(
+     *  description="Buzz user",
+     *  input="SecretParty\Bundle\CoreBundle\Form\BuzzType"
+     * )
+     * @Rest\Post("/party/{id}/buzz")
+     * @Rest\View
+     */
+    public function buzzAction(Request $request,$id)
+    {
+        $party = $this->getParty($id);
+
+        $form = $this->createForm(new BuzzType());
+        $form->handleRequest($request);
+
+        if($form->isValid()){
+            $data = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $buzzer = $em->getRepository("SecretPartyCoreBundle:UserPartySecret")->findOneBy(array("user"=> $data['buzzer'],"party"=>$party));
+            $buzzee = $em->getRepository("SecretPartyCoreBundle:UserPartySecret")->findOneBy(array("user"=> $data['buzzee'],"party"=>$party));
+
+            if (!$buzzer) {
+
+                throw $this->createNotFoundException('Unable to find buzzer (User entity).');
+            }
+            if (!$buzzee) {
+
+                throw $this->createNotFoundException('Unable to find buzzee (User entity).');
+            }
+
+            $buzz = new Buzz();
+            $buzz->setParty($party);
+            $buzz->setBuzzer($buzzer);
+            $buzz->setBuzzee($buzzee);
+            $buzz->setSecret($data["secret"]);
+            $buzz->setDate(new \DateTime());
+            $em->persist($buzz);
+            $em->flush();
+
+            return $this->view();
         }
         return $this->view($form,Codes::HTTP_BAD_REQUEST);
     }
