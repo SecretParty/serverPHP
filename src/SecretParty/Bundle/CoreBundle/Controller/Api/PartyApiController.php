@@ -24,6 +24,7 @@ use FOS\RestBundle\Util\Codes;
 use SecretParty\Bundle\CoreBundle\Entity\Buzz;
 use SecretParty\Bundle\CoreBundle\Entity\PartyUser;
 use SecretParty\Bundle\CoreBundle\Entity\UserPartySecret;
+use SecretParty\Bundle\CoreBundle\Event\BuzzEvent;
 use SecretParty\Bundle\CoreBundle\Event\JoinUserEvent;
 use SecretParty\Bundle\CoreBundle\Exception\PartyLogicalException;
 use SecretParty\Bundle\CoreBundle\Form\BuzzType;
@@ -200,24 +201,18 @@ class PartyApiController extends FOSRestController
         if($form->isValid()){
             $data = $form->getData();
             $em = $this->getDoctrine()->getManager();
-            $buzzer = $em->getRepository("SecretPartyCoreBundle:UserPartySecret")->findOneBy(array("user"=> $data['buzzer'],"party"=>$party));
-            $buzzee = $em->getRepository("SecretPartyCoreBundle:UserPartySecret")->findOneBy(array("user"=> $data['buzzee'],"party"=>$party));
-
-            if (!$buzzer) {
-
-                throw $this->createNotFoundException('Unable to find buzzer (User entity).');
-            }
-            if (!$buzzee) {
-
-                throw $this->createNotFoundException('Unable to find buzzee (User entity).');
-            }
+            $buzzer = $this->getUserPartySecret($data['buzzer'],$party);
+            $buzzee = $this->getUserPartySecret($data['buzzee'],$party);
 
             $buzz = new Buzz();
-            $buzz->setParty($party);
             $buzz->setBuzzer($buzzer);
             $buzz->setBuzzee($buzzee);
             $buzz->setSecret($data["secret"]);
             $buzz->setDate(new \DateTime());
+
+            $event = new BuzzEvent($buzz);
+            $this->get('event_dispatcher')->dispatch('secret_party_core.event.buzz',$event);
+
             $em->persist($buzz);
             $em->flush();
 
@@ -239,7 +234,29 @@ class PartyApiController extends FOSRestController
 
             throw $this->createNotFoundException('Unable to find Party entity.');
         }
-        return $party;
+        if($party->getTimestamp()+$party->getLength() < time()){
+
+        }
+        else
+            return $party;
+    }
+
+    /**
+     * @param $user
+     * @param $party
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @internal param $id
+     * @return Party
+     */
+    private function getUserPartySecret($user,$party)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository("SecretPartyCoreBundle:UserPartySecret")->findOneBy(array("user"=> $user,"party"=>$party));
+        if (!$entity) {
+
+            throw $this->createNotFoundException('Unable to find User entity in Party.');
+        }
+        return $entity;
     }
 
 }

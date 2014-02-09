@@ -9,6 +9,7 @@
         <parameter key="secret_party_core.menu.menu_builder.class">SecretParty\Bundle\CoreBundle\Menu\MenuBuilder</parameter>
         <parameter key="secret_party_core.menu.main.class">Knp\Menu\MenuItem</parameter>
         <parameter key="secret_party_core.event_listener.join_user.class">SecretParty\Bundle\CoreBundle\EventListener\JoinUserEventListener</parameter>
+        <parameter key="secret_party_core.event_listener.buzz.class">SecretParty\Bundle\CoreBundle\EventListener\BuzzEventListener</parameter>
     </parameters>
 
     <services>
@@ -21,6 +22,13 @@
         </service>
         <service id="secret_party_core.event_listener.join_user"  class="%secret_party_core.event_listener.join_user.class%" >
             <tag name="kernel.event_listener" event="secret_party_core.event.join_user" method="onJoinUserEvent"/>
+        </service>
+        <service id="secret_party_core.event_listener.buzz"  class="%secret_party_core.event_listener.buzz.class%" >
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <tag name="kernel.event_listener" event="secret_party_core.event.buzz" method="checkNoFinishParty"/>
+            <tag name="kernel.event_listener" event="secret_party_core.event.buzz" method="checkSameParty"/>
+            <tag name="kernel.event_listener" event="secret_party_core.event.buzz" method="checkSameUser"/>
+            <tag name="kernel.event_listener" event="secret_party_core.event.buzz" method="checkUniqueBuzz"/>
         </service>
     </services>
 

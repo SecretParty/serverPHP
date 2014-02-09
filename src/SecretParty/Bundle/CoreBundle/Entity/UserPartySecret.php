@@ -18,6 +18,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class UserPartySecret
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
      * @var Secrets
      *
      * @ORM\ManyToOne(targetEntity="Secrets")
@@ -32,7 +41,6 @@ class UserPartySecret
      * @ORM\ManyToOne(targetEntity="User", inversedBy="parties")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @Assert\NotBlank()
-     * @ORM\Id
      * @JMS\Groups({"party"})
      */
     private $user;
@@ -43,7 +51,6 @@ class UserPartySecret
      * @ORM\ManyToOne(targetEntity="Party", inversedBy="users")
      * @ORM\JoinColumn(name="party_id", referencedColumnName="id")
      * @Assert\NotBlank()
-     * @ORM\Id
      */
     private $party;
 
@@ -114,5 +121,15 @@ class UserPartySecret
     public function getParty()
     {
         return $this->party;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

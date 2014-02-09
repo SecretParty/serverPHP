@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Buzz
  *
  * @ORM\Table(name="secretpartycore_buzz")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="SecretParty\Bundle\CoreBundle\Entity\Repository\BuzzRepository")
  */
 class Buzz
 {
@@ -32,7 +32,7 @@ class Buzz
      * @var UserPartySecret
      *
      * @ORM\ManyToOne(targetEntity="UserPartySecret")
-     * @ORM\JoinColumns({@ORM\JoinColumn(name="buzzed_id", referencedColumnName="user_id"),@ORM\JoinColumn(name="party_id", referencedColumnName="party_id")})
+     * @ORM\JoinColumn(name="buzzed_id", referencedColumnName="id")
      */
     private $buzzer;
 
@@ -40,7 +40,7 @@ class Buzz
      * @var UserPartySecret
      *
      * @ORM\ManyToOne(targetEntity="UserPartySecret")
-     * @ORM\JoinColumns({@ORM\JoinColumn(name="buzzee_id", referencedColumnName="user_id"),@ORM\JoinColumn(name="party_id", referencedColumnName="party_id")})
+     * @ORM\JoinColumn(name="buzzee_id", referencedColumnName="id")
      */
     private $buzzee;
 
@@ -83,29 +83,6 @@ class Buzz
     public function getDate()
     {
         return $this->date;
-    }
-
-    /**
-     * Set party
-     *
-     * @param \SecretParty\Bundle\CoreBundle\Entity\Party $party
-     * @return Buzz
-     */
-    public function setParty(\SecretParty\Bundle\CoreBundle\Entity\Party $party = null)
-    {
-        $this->party = $party;
-
-        return $this;
-    }
-
-    /**
-     * Get party
-     *
-     * @return \SecretParty\Bundle\CoreBundle\Entity\Party 
-     */
-    public function getParty()
-    {
-        return $this->party;
     }
 
     /**
