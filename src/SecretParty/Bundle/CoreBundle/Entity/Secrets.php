@@ -38,7 +38,7 @@ class Secrets
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @JMS\Groups({"thematic"})
+     * @JMS\Groups({"thematic","resultat"})
      */
     private $id;
 

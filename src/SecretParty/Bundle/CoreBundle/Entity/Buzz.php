@@ -3,6 +3,7 @@
 namespace SecretParty\Bundle\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Buzz
@@ -25,6 +26,7 @@ class Buzz
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @JMS\Groups({"resultat"})
      */
     private $date;
 
@@ -39,7 +41,7 @@ class Buzz
     /**
      * @var UserPartySecret
      *
-     * @ORM\ManyToOne(targetEntity="UserPartySecret")
+     * @ORM\ManyToOne(targetEntity="UserPartySecret", inversedBy="buzzers")
      * @ORM\JoinColumn(name="buzzee_id", referencedColumnName="id")
      */
     private $buzzee;
@@ -49,6 +51,7 @@ class Buzz
      *
      * @ORM\ManyToOne(targetEntity="Secrets")
      * @ORM\JoinColumn(name="secret_id", referencedColumnName="id")
+     * @JMS\Groups({"resultat"})
      */
     private $secret;
 
@@ -129,6 +132,18 @@ class Buzz
     public function getBuzzer()
     {
         return $this->buzzer;
+    }
+
+    /**
+     * Get buzzer
+     *
+     * @return \SecretParty\Bundle\CoreBundle\Entity\UserPartySecret
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"resultat"})
+     */
+    public function getBuzzerId()
+    {
+        return $this->buzzer->getId();
     }
 
     /**

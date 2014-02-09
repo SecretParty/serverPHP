@@ -133,8 +133,12 @@ class PartyApiController extends FOSRestController
      */
     public function getPartyAction($id)
     {
-        $view = $this->view($this->getParty($id));
-        $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
+        $party = $this->getParty($id);
+        $view = $this->view($party);
+        if($party->getTimestamp()+$party->getLength() < time())
+            $view->setSerializationContext(SerializationContext::create()->setGroups(array('party','resultat')));
+        else
+            $view->setSerializationContext(SerializationContext::create()->setGroups(array('party')));
         return $view;
     }
 
@@ -234,11 +238,7 @@ class PartyApiController extends FOSRestController
 
             throw $this->createNotFoundException('Unable to find Party entity.');
         }
-        if($party->getTimestamp()+$party->getLength() < time()){
-
-        }
-        else
-            return $party;
+        return $party;
     }
 
     /**

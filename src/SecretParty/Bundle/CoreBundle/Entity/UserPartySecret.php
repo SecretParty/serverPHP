@@ -32,6 +32,7 @@ class UserPartySecret
      * @ORM\ManyToOne(targetEntity="Secrets")
      * @ORM\JoinColumn(name="secret_id", referencedColumnName="id")
      * @Assert\NotBlank()
+     * @JMS\Groups({"resultat"})
      */
     private $secret;
 
@@ -53,6 +54,14 @@ class UserPartySecret
      * @Assert\NotBlank()
      */
     private $party;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Buzz", mappedBy="buzzee")
+     * @JMS\Groups({"resultat"})
+     */
+    private $buzzers;
 
     /**
      * Set secret
@@ -131,5 +140,45 @@ class UserPartySecret
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->buzzers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add buzzers
+     *
+     * @param \SecretParty\Bundle\CoreBundle\Entity\Buzz $buzzers
+     * @return UserPartySecret
+     */
+    public function addBuzzer(\SecretParty\Bundle\CoreBundle\Entity\Buzz $buzzers)
+    {
+        $this->buzzers[] = $buzzers;
+
+        return $this;
+    }
+
+    /**
+     * Remove buzzers
+     *
+     * @param \SecretParty\Bundle\CoreBundle\Entity\Buzz $buzzers
+     */
+    public function removeBuzzer(\SecretParty\Bundle\CoreBundle\Entity\Buzz $buzzers)
+    {
+        $this->buzzers->removeElement($buzzers);
+    }
+
+    /**
+     * Get buzzers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBuzzers()
+    {
+        return $this->buzzers;
     }
 }
